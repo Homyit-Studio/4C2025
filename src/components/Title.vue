@@ -125,7 +125,7 @@ text {
 
 @keyframes showup {
     from {
-        letter-spacing: -8vw;
+        letter-spacing: -10vw;
     }
 
     to {

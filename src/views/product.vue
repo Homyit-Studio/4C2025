@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 import MacDock from '@/components/MacDock.vue';
 import NavHeader from '@/components/NavHeader.vue';
 
-const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
+const icons = ref(['/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
 
 const handleDockClick = (index) => {
     const element = document.getElementById(`item-${index}`)
@@ -56,8 +56,6 @@ onMounted(() => {
         <div class="item" id="item-1">2</div>
         <div class="item" id="item-2">3</div>
         <div class="item" id="item-3">4</div>
-        <div class="item" id="item-4">5</div>
-        <div class="footer1">footer</div>
     </div>
 </template>
 
