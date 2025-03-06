@@ -19,6 +19,16 @@
     src: url(./fonts/NT-title-big.ttf);
 } */
 
+@font-face {
+    font-family: 'main-container';
+    src: url(../assets/fonts/main-container-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'main';
+    src: url(../assets/fonts/main-Regular.ttf);
+}
+
 
 * {
     margin: 0;
@@ -34,7 +44,7 @@
 }
 
 body {
-    font-family: '微软雅黑', 'Poppins-Regular';
+    font-family: 'main', 'Poppins-Regular';
     background: var(--bg-color);
     /* appearance: none; */
     /* min-height: 100vh; */

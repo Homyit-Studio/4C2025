@@ -85,20 +85,20 @@ onBeforeUnmount(() => {
 }
 
 .bubbles {
-    z-index: 0;
+    z-index: -1;
     /* position: absolute; */
     width: 100%;
     height: 100px;
     border-radius: 50% 50% 0 0;
     filter: url(#bubble);
-    background-color: #E05252;
+    background-color: #d96b6b7b;
 }
 
 .bubble {
     z-index: -1;
     position: absolute;
     border-radius: 50%;
-    background-color: #E05252;
+    background-color: #d96b6b7b;
     width: var(--s);
     height: var(--s);
     left: var(--x);
