@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url(./assets/fonts/Poppins-Regular.ttf);
+}
+
+/* 
+@font-face {
+    font-family: 'nav-text';
+    src: url(./fonts/字魂宇宙巡航体-Regular\(商用需授权\).ttf);
+}
+
+@font-face {
+    font-family: 'product-text';
+    src: url(./fonts/字魂正酷超级潜能体-Regular\(商用需授权\).ttf);
+}
+
+@font-face {
+    font-family: 'title-big';
+    src: url(./fonts/NT-title-big.ttf);
+} */
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* font-size: calc(100vw / 25); */
+    /* --primary-color: #4b89ff; */
+    --bg-color: #ecf0f3;
+    /* --shadow-intensity: 0.15; */
+}
+
+body {
+    font-family: '微软雅黑', 'Poppins-Regular';
+    background: var(--bg-color);
+    /* appearance: none; */
+    /* min-height: 100vh; */
+    /* overflow: hidden; */
+}
