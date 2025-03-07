@@ -27,8 +27,9 @@ let intervalId = null
 const vw = ref(document.documentElement.clientWidth)
 
 const createBubble = () => {
-    const s = Math.random() * 100
-    const x = Math.random() * (vw.value - s)
+    const maxBubbleSize = Math.min(100, vw.value)// 最大尺寸不超过视口宽度或固定值100px
+    const s = Math.random() * maxBubbleSize
+    const x = vw.value < s ? 0 : Math.random() * (vw.value - s)
     const d = Math.random() * 2 + 5
 
     return {
@@ -73,20 +74,17 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .footer {
-    width: 100%;
     z-index: -1;
     position: absolute;
     width: 100%;
-    /* height: 200px; */
+    height: 100px;
     bottom: 0;
-    /* height: 200px; */
-    /* position: relative; */
-    /* background-color: rgb(158, 78, 78); */
+    /* overflow-x: hidden; */
 }
 
 .bubbles {
     z-index: -1;
-    /* position: absolute; */
+    position: absolute;
     width: 100%;
     height: 100px;
     border-radius: 50% 50% 0 0;

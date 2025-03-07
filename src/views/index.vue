@@ -6,6 +6,7 @@ import NavHeader from '@/components/NavHeader.vue';
 import Bubble from '@/components/Bubble.vue';
 import Title from '@/components/Title.vue';
 import IndexFooter from '@/components/IndexFooter.vue';
+import PhoneIntroduce from '@/components/PhoneIntroduce.vue';
 
 const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
 
@@ -55,7 +56,9 @@ onMounted(() => {
       <Title></Title>
       <Bubble></Bubble>
     </div>
-    <div class="item" id="item-1">2</div>
+    <div class="item" id="item-1">
+      <PhoneIntroduce></PhoneIntroduce>
+    </div>
     <div class="item" id="item-2">3</div>
     <div class="item" id="item-3">4</div>
     <div class="item" id="item-4">5</div>
@@ -68,9 +71,15 @@ onMounted(() => {
 <style scoped>
 #item-0 {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 60vh;
 
+}
+
+#item-1 {
+  position: relative;
+  /* overflow: hidden; */
+  /* height: 60vh; */
 }
 
 .container {
@@ -102,14 +111,5 @@ onMounted(() => {
   scroll-snap-align: start;
   /* 在滚动此元素的滚动容器的可见视口时，滚动容器可“越过”吸附位置。 */
   scroll-snap-stop: normal;
-}
-
-
-.item:nth-child(2) {
-  background-color: rgb(59, 123, 59);
-}
-
-.item:nth-child(3) {
-  background-color: rgb(90, 90, 167);
 }
 </style>

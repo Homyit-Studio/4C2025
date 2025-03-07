@@ -44,7 +44,7 @@
 }
 
 body {
-    font-family: 'main', 'Poppins-Regular';
+    font-family: 'main';
     background: var(--bg-color);
     /* appearance: none; */
     /* min-height: 100vh; */

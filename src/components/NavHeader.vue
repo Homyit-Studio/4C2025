@@ -8,10 +8,10 @@
                         <linearGradient id="waterGradient" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="100%"
                             y2="0%">
                             <stop offset="0%" stop-color="#2196F3">
-                                <animate attributeName="offset" from="0" to="1" dur="5s" fill="freeze" />
+                                <animate attributeName="offset" from="0" to="1" dur="6s" begin="3s" fill="freeze" />
                             </stop>
                             <stop offset="0%" stop-color="#BBDEFB">
-                                <animate attributeName="offset" from="0" to="1" dur="5s" fill="freeze" />
+                                <animate attributeName="offset" from="0" to="1" dur="6s" begin="3s" fill="freeze" />
                             </stop>
                         </linearGradient>
                     </defs>
@@ -110,7 +110,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const handleToIndex = () => {
@@ -144,6 +144,29 @@ const handleToProduct = () => {
 const handleToSearch = () => {
     router.push('/search')
 }
+
+// 新增：滚动监听函数
+const handleScroll = () => {
+    const navHeader = document.querySelector('.nav-header')
+    const scrollTop = window.scrollY
+    const threshold = window.innerHeight * 0.5 // 50vh的像素值
+
+    // 计算透明度比例（0-1）
+    let opacity = 1 - (scrollTop / threshold)
+    opacity = Math.max(0, Math.min(1, opacity)) // 确保0-1范围
+
+    // 设置透明度
+    navHeader.style.opacity = opacity
+}
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
+
 onMounted(() => {
     document.querySelectorAll('.logo-path').forEach(path => {
         const length = path.getTotalLength()
@@ -154,6 +177,29 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.nav-header {
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+
+    .left {
+        display: flex;
+        align-items: center;
+        /* margin-top: 20px; */
+    }
+
+    .right {
+        display: flex;
+        margin-right: 20px;
+    }
+}
+
+
 .right {
     display: flex;
     align-items: center;
@@ -228,25 +274,6 @@ onMounted(() => {
     filter: drop-shadow(0 2px 4px rgba(75, 137, 255, 0.3));
 }
 
-.nav-header {
-    z-index: 10;
-    position: fixed;
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-    justify-content: space-between;
-
-    .left {
-        display: flex;
-        align-items: center;
-        /* margin-top: 20px; */
-    }
-
-    .right {
-        display: flex;
-        margin-right: 20px;
-    }
-}
 
 
 .ToBuy-cart {
