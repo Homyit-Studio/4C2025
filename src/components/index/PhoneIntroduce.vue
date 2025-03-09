@@ -1,8 +1,9 @@
 <template>
     <div class="container-wrapper">
-        <img src="../assets/phone.png" style="position: absolute; height: 70vh;" alt="">
+        <img src="../assets/phone.png" style="position: absolute; height: 70vh;pointer-events: none;user-select: none;"
+            alt="">
         <!-- 左侧滚动选择器 -->
-        <div class="carousel-container">
+        <div class="carousel-container" @mouseover="isHover = true" @mouseout="isHover = false" @click="resetAutoPlay">
             <div class="scroller" :style="scrollerStyle" @wheel="handleWheel">
                 <div v-for="(item, index) in manufacturers" :key="index" class="item" :style="getItemStyle(index)"
                     @click="handleClick(index)">
@@ -45,7 +46,7 @@
     </div>
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 // 手机厂商数据
 const manufacturers = [
@@ -97,6 +98,7 @@ const activeIndex = computed(() => {
 const handleClick = (index) => {
     const targetAngle = -index * itemAngle.value // 使用负角度旋转
     activeRotateY.value = targetAngle
+    resetAutoPlay() // 点击后重置定时器
 }
 
 // 修改后的3D滚动样式
@@ -116,7 +118,7 @@ const getItemStyle = (index) => {
     }
 }
 
-// 修改后的滚轮处理
+// 滚轮处理
 const handleWheel = (e) => {
     e.preventDefault()
     const delta = Math.sign(e.deltaY)  // 获取滚动方向
@@ -127,6 +129,36 @@ const handleWheel = (e) => {
 // 初始化位置
 onMounted(() => {
     activeRotateY.value = 0
+})
+
+
+// 自动轮播
+const autoPlayInterval = ref(null) // 自动播放定时器
+const isHover = ref(false)         // 鼠标悬停状态
+// 新增自动播放相关逻辑
+const getNextIndex = () => {
+    return (activeIndex.value + 1) % itemCount.value
+}
+
+const autoPlay = () => {
+    if (!isHover.value) {
+        const nextIndex = getNextIndex()
+        handleClick(nextIndex)
+    }
+}
+
+const resetAutoPlay = () => {
+    clearInterval(autoPlayInterval.value)
+    autoPlayInterval.value = setInterval(autoPlay, 4000)
+}
+
+onMounted(() => {
+    activeRotateY.value = 0
+    resetAutoPlay()
+})
+
+onBeforeUnmount(() => {
+    clearInterval(autoPlayInterval.value)
 })
 </script>
 

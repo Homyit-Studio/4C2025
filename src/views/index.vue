@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-import MacDock from '@/components/MacDock.vue';
-import NavHeader from '@/components/NavHeader.vue';
-import Bubble from '@/components/Bubble.vue';
-import Title from '@/components/Title.vue';
-import IndexFooter from '@/components/IndexFooter.vue';
-import PhoneIntroduce from '@/components/PhoneIntroduce.vue';
+import MacDock from '@/components/index/MacDock.vue';
+import NavHeader from '@/components/index/NavHeader.vue';
+import Bubble from '@/components/index/Bubble.vue';
+import Title from '@/components/index/Title.vue';
+import IndexFooter from '@/components/index/IndexFooter.vue';
+import PhoneIntroduce from '@/components/index/PhoneIntroduce.vue';
 
 const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
 
@@ -46,18 +46,21 @@ onMounted(() => {
   animateStdDeviation()
 })
 
+
+const scrollContainer = ref(null)
 </script>
 
 <template>
-  <NavHeader />
   <MacDock :icons="icons" @item-click="handleDockClick" />
-  <div class="container">
+  <div class="container" ref="scrollContainer">
+    <NavHeader :scrollContainer="scrollContainer" />
     <div class="item" id="item-0">
       <Title></Title>
       <Bubble></Bubble>
     </div>
     <div class="item" id="item-1">
       <PhoneIntroduce></PhoneIntroduce>
+      <Bubble></Bubble>
     </div>
     <div class="item" id="item-2">3</div>
     <div class="item" id="item-3">4</div>

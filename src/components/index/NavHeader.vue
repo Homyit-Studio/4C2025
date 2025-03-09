@@ -96,14 +96,14 @@
                 </div>
             </div>
             <div class="isUser" style="display: flex;">
-                <div @click="handleUserClickToCenter">
-                    <!-- 已登录显示用户头像 -->
-                    <i class='bx bxs-user-circle user-icon logged-in'></i>
-                </div>
-                <div @click="handleUserClick">
-                    <!-- 未登录显示未登录图标 -->
-                    <i class='bx bx-user-circle user-icon'></i>
-                </div>
+
+                <!-- 已登录显示用户头像 -->
+                <i class='bx bxs-user-circle user-icon logged-in' @click="handleUserClickToCenter"></i>
+
+
+                <!-- 未登录显示未登录图标 -->
+                <i class='bx bx-user-circle user-icon' @click="handleUserClick"></i>
+
             </div>
         </div>
     </div>
@@ -145,27 +145,60 @@ const handleToSearch = () => {
     router.push('/search')
 }
 
-// 新增：滚动监听函数
+
+const props = defineProps({
+    scrollContainer: HTMLElement | null, // 接收滚动容器
+})
+let prevContainer = null
+
 const handleScroll = () => {
+    if (!props.scrollContainer) return
     const navHeader = document.querySelector('.nav-header')
-    const scrollTop = window.scrollY
-    const threshold = window.innerHeight * 0.5 // 50vh的像素值
+    const scrollTop = props.scrollContainer.scrollTop
+    const threshold = props.scrollContainer.clientHeight * 0.5
 
-    // 计算透明度比例（0-1）
-    let opacity = 1 - (scrollTop / threshold)
-    opacity = Math.max(0, Math.min(1, opacity)) // 确保0-1范围
-
-    // 设置透明度
-    navHeader.style.opacity = opacity
+    requestAnimationFrame(() => {
+        let opacity = 1 - (scrollTop / threshold)
+        opacity = Math.max(0, Math.min(1, opacity))
+        navHeader.style.opacity = opacity
+        navHeader.style.backgroundColor = `rgba(255, 255, 255, ${0.9 * opacity})`
+    })
 }
+// onMounted(() => {
+//     if (props.scrollContainer) {
+//         props.scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
+//     }
+// })
 
-onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
-})
-
+// 组件卸载时清理
 onBeforeUnmount(() => {
-    window.removeEventListener('scroll', handleScroll)
+    if (prevContainer) {
+        prevContainer.removeEventListener('scroll', handleScroll)
+    }
 })
+import { watch } from 'vue'
+
+// 移除原有的onMounted事件绑定
+// onMounted(() => { ... }) 
+
+// 使用watch监听scrollContainer变化
+watch(
+    () => props.scrollContainer,
+    (newContainer) => {
+        // 移除旧事件
+        if (newContainer !== prevContainer && prevContainer) {
+            prevContainer.removeEventListener('scroll', handleScroll)
+        }
+
+        // 绑定新事件
+        if (newContainer) {
+            newContainer.addEventListener('scroll', handleScroll, { passive: true })
+        }
+
+        prevContainer = newContainer // 需要维护prevContainer变量
+    },
+    { immediate: true } // 立即执行初始绑定
+)
 
 onMounted(() => {
     document.querySelectorAll('.logo-path').forEach(path => {
@@ -180,12 +213,19 @@ onMounted(() => {
 .nav-header {
     z-index: 10;
     position: fixed;
+    top: 0;
+    /* 新增定位锚点 */
+    left: 0;
     width: 100%;
-    background-color: #fff;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* 增加初始透明度 */
+    backdrop-filter: blur(5px);
+    /* 可选毛玻璃效果 */
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    /* 增加颜色过渡 */
     display: flex;
     justify-content: space-between;
-    opacity: 1;
-    transition: opacity 0.3s ease;
 
     .left {
         display: flex;

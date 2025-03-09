@@ -29,7 +29,7 @@ const vw = ref(document.documentElement.clientWidth)
 const createBubble = () => {
     const maxBubbleSize = Math.min(100, vw.value)// 最大尺寸不超过视口宽度或固定值100px
     const s = Math.random() * maxBubbleSize
-    const x = vw.value < s ? 0 : Math.random() * (vw.value - s)
+    const x = Math.random() * vw.value - 100
     const d = Math.random() * 2 + 5
 
     return {
@@ -90,6 +90,7 @@ onBeforeUnmount(() => {
     border-radius: 50% 50% 0 0;
     filter: url(#bubble);
     background-color: #d96b6b7b;
+    /* overflow-x: hidden; */
 }
 
 .bubble {

@@ -225,4 +225,22 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     transform: scale(0.95) !important;
     transition: transform 0.1s;
 }
+
+@media (max-width: 768px) { /* 移动端适配 */
+    .menu {
+        right: 2vw;
+        padding: 1vh 0;
+        border-radius: 8px;
+    }
+    
+    .menu-item {
+        width: 8vw;
+        height: 8vw;
+        margin: 0 5px;
+    }
+    
+    .gap {
+        height: 10px;
+    }
+}
 </style>

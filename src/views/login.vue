@@ -76,7 +76,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import NavHeader from '@/components/NavHeader.vue';
+import NavHeader from '@/components/index/NavHeader.vue';
 const isLogin = ref(true);
 </script>
 
