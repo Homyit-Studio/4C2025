@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-import MacDock from '@/components/MacDock.vue';
-import NavHeader from '@/components/NavHeader.vue';
+import MacDock from '@/components/index/MacDock.vue';
+import NavHeader from '@/components/index/NavHeader.vue';
 
 const icons = ref(['/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
 

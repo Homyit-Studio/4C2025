@@ -1,6 +1,6 @@
 <template>
     <!-- 顶部导航栏 -->
-     <div class="nav-header">
+    <div class="nav-header">
         <div class="left">
             <div class="nav-logo-name" @click="handleToIndex">
                 <svg viewBox="0 0 780 160" class="nav-svg-name" xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@
             </div>
 
             <!-- slogan -->
-             <div style="font-size: 1.8vw;color:#d25b5b; display: flex; align-items: center;">
+            <div style="font-size: 1.8vw;color:#d25b5b; display: flex; align-items: center;">
                 做最实惠的电子商品专卖店
             </div>
         </div>
@@ -166,6 +166,7 @@ onMounted(() => {
         /* margin-top: 20px; */
     }
 }
+
 .nav-logo-name {
     cursor: pointer;
     width: 14vw;
@@ -182,6 +183,7 @@ onMounted(() => {
     border-radius: 100px;
     /* 确保溢出部分可见 */
 }
+
 .nav-logo-name {
     cursor: pointer;
     width: 14vw;
