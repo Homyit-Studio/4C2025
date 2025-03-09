@@ -112,7 +112,6 @@
     </div>
   </div>
 
-    <!-- 底部 -->
   <shortFooter />
 
 </template>
@@ -120,7 +119,7 @@
 <script setup>
 import { useCartStore } from '@/stores/cartStore';
 import { useRouter } from 'vue-router';
-import NavHeader from '@/components/NavHeader.vue';
+import NavHeader from '@/components/index/NavHeader.vue';
 import shortFooter from '@/components/shortFooter.vue';
 import { ElMessage } from 'element-plus';
 import { Delete } from '@element-plus/icons-vue';
