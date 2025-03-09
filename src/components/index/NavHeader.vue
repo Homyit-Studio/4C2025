@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div style="font-size: 1.8vw;color:#d25b5b; display: flex; align-items: center;">
+        <div style="font-size: 1vw;color:#d25b5b; display: flex; align-items: center;">
             做最实惠的电子商品专卖店
         </div>
 
@@ -264,8 +264,8 @@ onMounted(() => {
 }
 
 .search-input {
-    width: 15vw;
-    height: 2vw;
+    width: 10vw;
+    height: 1.5vw;
     padding: 0.5rem 1rem 0.5rem 3rem;
     border: none;
     border-radius: 20px;
@@ -278,8 +278,8 @@ onMounted(() => {
 
 .search-input:focus {
     outline: none;
-    width: 20vw;
-    height: 2.3vw;
+    width: 12vw;
+    height: 1.8vw;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     background: rgba(255, 255, 255, 0.8);
 }
@@ -319,6 +319,7 @@ onMounted(() => {
 .ToBuy-cart {
     display: flex;
     width: 7vw;
+    align-items: center;
     height: 2.1vw;
     /* background-color: rgba(255, 255, 255, 0.6); */
     border-radius: 100px;
@@ -327,6 +328,7 @@ onMounted(() => {
 .ToBuy-order {
     display: flex;
     width: 6vw;
+    align-items: center;
     height: 2.1vw;
     /* background-color: rgba(255, 255, 255, 0.6); */
     border-radius: 100px;
@@ -335,7 +337,7 @@ onMounted(() => {
 
 .cart-item {
     cursor: pointer;
-    font-size: 1.5vw;
+    font-size: 1vw;
     color: #666;
 }
 
@@ -345,7 +347,7 @@ onMounted(() => {
 
 .buy-item {
     cursor: pointer;
-    font-size: 1.5vw;
+    font-size: 1vw;
     color: #666;
 }
 
