@@ -106,8 +106,7 @@
 </template>
 
 <script setup>
-
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { onMounted, onBeforeUnmount,ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const isLogin = ref(true);
@@ -150,7 +149,7 @@ onMounted(() => {
 
 
 <style scoped>
-/* 顶部导舏栏样式 */
+/* 顶部导航栏样式 */
 .nav-header {
     z-index: 10;
     position: fixed;
