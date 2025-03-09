@@ -2,9 +2,8 @@
     <transition name="fade">
         <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
             ref="dock">
-            <div v-for="(icon, index) in icons" :key="index">
-                <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }"
-                    @click="handleItemClick(index)">
+            <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
+                <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
                     <img :src="icon" type="image/svg+xml" class="icon"></img>
                 </div>
                 <div class="gap" v-if="index !== icons.length - 1"></div>
@@ -226,19 +225,21 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     transition: transform 0.1s;
 }
 
-@media (max-width: 768px) { /* 移动端适配 */
+@media (max-width: 768px) {
+
+    /* 移动端适配 */
     .menu {
         right: 2vw;
         padding: 1vh 0;
         border-radius: 8px;
     }
-    
+
     .menu-item {
         width: 8vw;
         height: 8vw;
         margin: 0 5px;
     }
-    
+
     .gap {
         height: 10px;
     }

@@ -1,27 +1,43 @@
 <template>
     <div class="container-wrapper">
-        <img src="../assets/phone.png" style="position: absolute; height: 70vh;pointer-events: none;user-select: none;"
-            alt="">
-        <!-- 左侧滚动选择器 -->
-        <div class="carousel-container" @mouseover="isHover = true" @mouseout="isHover = false" @click="resetAutoPlay">
-            <div class="scroller" :style="scrollerStyle" @wheel="handleWheel">
-                <div v-for="(item, index) in manufacturers" :key="index" class="item" :style="getItemStyle(index)"
-                    @click="handleClick(index)">
-                    {{ item.name }}
-                </div>
-            </div>
+        <!-- 图片轮播区域 -->
+        <transition name="fade" mode="out-in">
+            <img :key="selectedManufacturer.img" :src="selectedManufacturer.img" class="product-image"
+                alt="phone image">
+        </transition>
 
-            <div class="toptitleup" style="transform: scale(0.5);">
-                <div class="mouse"></div>
+        <!-- 左侧滚动选择器 -->
+        <div class="left-panel">
+            <div class="carousel-container" @mouseover="isHover = true" @mouseout="isHover = false"
+                @click="resetAutoPlay">
+                <div class="scroller" :style="scrollerStyle" @wheel="handleWheel">
+                    <div v-for="(item, index) in manufacturers" :key="index" class="item" :style="getItemStyle(index)"
+                        @click="handleClick(index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+
+                <div class="toptitleup" style="transform: scale(0.5);">
+                    <div class="mouse"></div>
+                </div>
+                <p class="mousep">鼠标滚动</p>
             </div>
-            <p class="mousep">鼠标滚动</p>
         </div>
 
         <!-- 右侧详细信息 -->
         <div class="right-panel">
             <transition name="flip" mode="out-in">
                 <div :key="selectedManufacturer.name" class="content-wrapper">
-                    <div class="name">{{ selectedManufacturer.name }}</div>
+                    <div class="header-section">
+                        <div class="name">{{ selectedManufacturer.name }}</div>
+                        <!-- 子品牌渲染 -->
+                        <div class="sub-brands" v-if="selectedManufacturer.subBrands.length">
+                            <span class="sub-label">旗下品牌：</span>
+                            <span v-for="(brand, idx) in selectedManufacturer.subBrands" :key="idx" class="brand-tag">
+                                {{ brand }}
+                            </span>
+                        </div>
+                    </div>
                     <div class="details">
                         <div class="advantages">
                             <h3>优点</h3>
@@ -51,35 +67,59 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 // 手机厂商数据
 const manufacturers = [
     {
-        name: '苹果',
-        advantages: ['系统流畅', '生态完善', '保值率高'],
-        disadvantages: ['价格昂贵', '充电速度慢', '维修成本高']
-    },
-    {
         name: '华为',
+        img: '/phone/huaweimate70rs.png',
+        subBrands: ['荣耀'],    // 新增子品牌字段
         advantages: ['信号出色', '拍照强大', '自主芯片'],
         disadvantages: ['5G受限', '价格偏高', '生态较封闭']
     },
     {
+        name: '苹果',
+        img: '/phone/iPhone16pro.png',
+        subBrands: [],
+        advantages: ['系统流畅', '生态完善', '保值率高'],
+        disadvantages: ['价格昂贵', '充电速度慢', '维修成本高']
+    },
+    {
         name: '小米',
+        img: '/phone/xiaomi15ultra.png',
+        subBrands: ['红米'],
         advantages: ['性价比高', '生态丰富', '更新频繁'],
         disadvantages: ['发热明显', '广告较多', '质感一般']
     },
     {
+        name: 'OPPO',
+        img: '/phone/OPPOFind5.png',
+        subBrands: ['一加'],
+        advantages: ['充电速度快', '拍照算法好', '外观时尚'],
+        disadvantages: ['性能调度保守', '系统更新慢', '中低端性价比一般']
+    },
+    {
         name: '三星',
+        img: '/phone/Samsungs25ultra.png',
+        subBrands: [],
         advantages: ['屏幕顶级', '工艺精湛', '全球市场大'],
         disadvantages: ['系统本地化差', '电池续航一般', '价格跳水快']
     },
     {
-        name: 'OPPO',
-        advantages: ['充电速度快', '拍照算法好', '外观时尚'],
-        disadvantages: ['性能调度保守', '系统更新慢', '中低端性价比一般']
+        name: 'VIVO',
+        img: '/phone/VIVOX200pro.png',
+        subBrands: ['IQOO'],
+        advantages: ['游戏性能强', '续航表现好'],  // 补充优点
+        disadvantages: ['系统广告较多']          // 补充缺点
     },
+    {
+        name: '中兴',
+        img: '/phone/hongmo10.png',
+        subBrands: ['努比亚'],
+        advantages: ['影像技术突出'],
+        disadvantages: ['市场认知度低']
+    }
 ]
 // 动态计算参数
 const itemCount = computed(() => manufacturers.length)
 const itemAngle = computed(() => 360 / itemCount.value) // 每个项目的旋转角度
-const radius = 100 // 3D旋转半径
+const radius = 25 * manufacturers.length // 3D旋转半径
 
 const activeRotateY = ref(0)
 
@@ -163,6 +203,80 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+.fade-enter-from {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.fade-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.product-image {
+    position: absolute;
+    height: 95%;
+    left: 52.5%;
+    pointer-events: none;
+    user-select: none;
+    /* 添加投影增强立体感 */
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+}
+
+/* 子品牌样式 */
+.header-section {
+    margin-bottom: 2rem;
+}
+
+.sub-brands {
+    font-size: 16px;
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+.sub-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.brand-tag {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 4px 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.brand-tag:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 优化现有样式 */
+.details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.advantages h3 {
+    color: #4CAF50;
+}
+
+.disadvantages h3 {
+    color: #F44336;
+}
+
+
+
 .container-wrapper {
     /* z-index: -1; */
     width: 100%;
@@ -172,9 +286,13 @@ onBeforeUnmount(() => {
 }
 
 .carousel-container {
-    width: 45%;
+    width: 100%;
     display: flex;
     perspective: 1500px;
+    height: 95%;
+    border-radius: 10px;
+    /* margin-left: 1vw; */
+    background-color: #d96b6b;
     position: relative;
     flex-direction: column;
     align-items: center;
@@ -216,9 +334,8 @@ onBeforeUnmount(() => {
 }
 
 .left-panel {
-    width: 55%;
-    background-color: #f8f8f8;
-    height: 70vh;
+    width: 52.5%;
+    height: 100%;
     /* 控制可视区域高度 */
     display: flex;
     flex-direction: column;
@@ -227,20 +344,23 @@ onBeforeUnmount(() => {
 }
 
 .right-panel {
-    width: 45%;
-    background-color: #f8f8f8;
-    height: 70vh;
+    width: 47.5%;
+    height: 95%;
+    /* margin-left: 2.5vw; */
+    padding: 20px;
+    background: #fffffff2;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     /* 控制可视区域高度 */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
     /* 内容垂直居中 */
 }
 
-/* .scroller {
-    height: 20vh;
-    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-} */
+
 
 .scroll-wrapper {
     overscroll-behavior: contain;
@@ -249,32 +369,6 @@ onBeforeUnmount(() => {
     /* 3D透视 */
     overflow: visible;
     /* 允许3D溢出 */
-}
-
-/* .item {
-    height: 60px;
-    position: absolute;
-    width: 100%;
-    transform-origin: 50% 50%;
-    transition:
-        transform 0.6s,
-        opacity 0.6s,
-        filter 0.6s;
-} */
-
-/* 3D布局 */
-/* .item:nth-child(n) {
-    transform:
-        rotateX(calc(var(--i) * 10deg)) translateZ(100px);
-} */
-
-
-/* 优化右侧面板样式 */
-.right-panel {
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* 保持原有过渡效果 */
@@ -308,7 +402,7 @@ ul {
 }
 
 li {
-    margin: 10px 0;
+    margin: 10px 10vh;
     padding: 8px 12px;
     background: #f8f8f8;
     border-radius: 4px;
@@ -341,17 +435,16 @@ li {
     opacity: 0;
 }
 
-/* 调整右侧面板定位 */
-.right-panel {
-    position: relative;
-    overflow: hidden;
-}
 
 /* .flip-enter-active,
 .flip-leave-active {
     position: absolute;
     width: 100%;
 } */
+
+
+
+
 /* 鼠标动画 */
 .toptitleup {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

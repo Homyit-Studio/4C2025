@@ -100,7 +100,7 @@ onMounted(() => {
 <style scoped>
 @font-face {
     font-family: 'title-big';
-    src: url(../assets/fonts/NT-title-big.ttf);
+    src: url(../../assets/fonts/NT-title-big.ttf);
 }
 
 .title-container {

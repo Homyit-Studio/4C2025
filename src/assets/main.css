@@ -46,6 +46,8 @@
 body {
     font-family: 'main';
     background: var(--bg-color);
+    font-size: 16px;
+    box-sizing: border-box;
     /* appearance: none; */
     /* min-height: 100vh; */
     /* overflow: hidden; */
