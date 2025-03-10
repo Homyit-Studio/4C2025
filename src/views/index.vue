@@ -8,7 +8,7 @@ import Title from '@/components/index/Title.vue';
 import IndexFooter from '@/components/index/IndexFooter.vue';
 import PhoneIntroduce from '@/components/index/PhoneIntroduce.vue';
 
-const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
+const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg", "/icons/icon6_more.svg"])
 
 const handleDockClick = (index) => {
   const element = document.getElementById(`item-${index}`)
@@ -65,7 +65,7 @@ const scrollContainer = ref(null)
     <div class="item" id="item-2">3</div>
     <div class="item" id="item-3">4</div>
     <div class="item" id="item-4">5</div>
-    <div class="footer">
+    <div class="footer" id="item-5">
       <IndexFooter></IndexFooter>
     </div>
   </div>
@@ -90,6 +90,8 @@ const scrollContainer = ref(null)
   scroll-snap-type: y proximity;
   overflow-y: scroll;
   height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .item {

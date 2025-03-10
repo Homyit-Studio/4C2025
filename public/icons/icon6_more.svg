@@ -1,0 +1,12 @@
+<svg t="1741616785653" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6767"
+    width="256" height="256">
+    <path
+        d="M993.615 209.213L532.821 4.415a51.2 51.2 0 0 0-41.6 0L30.427 209.213a51.2 51.2 0 0 0 0 93.592l460.794 204.798a51.379 51.379 0 0 0 41.6 0l460.794-204.798a51.2 51.2 0 0 0 0-93.592z m-481.607 558.79a51.2 51.2 0 0 1-20.787-4.403L30.427 558.802a51.2 51.2 0 0 1 41.6-93.592l439.981 195.556L952.016 465.21a51.2 51.2 0 0 1 41.6 93.592L532.82 763.6a51.2 51.2 0 0 1-20.813 4.403z m0 255.997a51.2 51.2 0 0 1-20.787-4.403L30.427 814.799a51.2 51.2 0 0 1 41.6-93.592l439.981 195.556 440.008-195.556a51.2 51.2 0 0 1 41.6 93.592L532.82 1019.597a51.2 51.2 0 0 1-20.813 4.403z"
+        p-id="6768" data-spm-anchor-id="a313x.search_index.0.i2.42ff3a812l5rTH" class="selected" fill="none"
+        stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5000"
+        stroke-dashoffset="5000">
+        <animate attributeName="stroke-dashoffset" values="5000;0;5000" keyTimes="0;0.5;1" dur="7s" calcMode="spline"
+            keySplines="0.25 0.1 0.25 1; 0.75 0.1 0.75 1" repeatCount="indefinite" />
+
+    </path>
+</svg>

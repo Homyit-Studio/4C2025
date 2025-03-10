@@ -1,10 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-import MacDock from '@/components/index/MacDock.vue';
 import NavHeader from '@/components/index/NavHeader.vue';
+import MacDockProduct from '@/components/product/MacDockProduct.vue';
+import BuyPhone from '@/components/product/BuyPhone.vue';
 
 const icons = ref(['/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg"])
+const titles = ref(['手机', '电脑', '耳机', '智能设备'])
+const activeIndex = ref(0)
 
 const handleDockClick = (index) => {
     const element = document.getElementById(`item-${index}`)
@@ -46,12 +49,10 @@ onMounted(() => {
 
 <template>
     <NavHeader />
-    <MacDock :icons="icons" @item-click="handleDockClick" />
-    <div class="container">
+    <MacDockProduct :icons="icons" :titles="titles" :activeIndex="activeIndex" @item-click="handleDockClick" />
+    <div class="maincontainer">
         <div class="item" id="item-0">
-            <!-- <Title></Title>
-            <Bubble></Bubble> -->
-            更多商品
+            <BuyPhone></BuyPhone>
         </div>
         <div class="item" id="item-1">2</div>
         <div class="item" id="item-2">3</div>
@@ -66,7 +67,7 @@ onMounted(() => {
   height: 60vh;
 } */
 
-.container {
+.maincontainer {
     font-size: 5em;
     scroll-snap-type: y proximity;
     overflow-y: scroll;

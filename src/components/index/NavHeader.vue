@@ -162,13 +162,13 @@ const handleScroll = () => {
         opacity = Math.max(0, Math.min(1, opacity))
         navHeader.style.opacity = opacity
         navHeader.style.backgroundColor = `rgba(255, 255, 255, ${0.9 * opacity})`
+        if (opacity === 0) {
+            navHeader.style.display = 'none'
+        } else {
+            navHeader.style.display = 'flex'
+        }
     })
 }
-// onMounted(() => {
-//     if (props.scrollContainer) {
-//         props.scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
-//     }
-// })
 
 // 组件卸载时清理
 onBeforeUnmount(() => {
@@ -374,8 +374,8 @@ onMounted(() => {
 
 .nav-logo-name {
     cursor: pointer;
-    width: 14vw;
-    height: 3vw;
+    width: 10vw;
+    height: 4vw;
     color: #666;
     margin-right: 20px;
     /* color: #4b89ff; */

@@ -9,7 +9,7 @@
     <svg style="display: none">
         <defs>
             <filter id="bubble">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
                 <feColorMatrix values="1 0 0 0 0
                     0 1 0 0 0
                     0 0 1 0 0
@@ -30,7 +30,7 @@ const createBubble = () => {
     const maxBubbleSize = Math.min(100, vw.value)// 最大尺寸不超过视口宽度或固定值100px
     const s = Math.random() * maxBubbleSize
     const x = Math.random() * vw.value - 100
-    const d = Math.random() * 2 + 5
+    const d = Math.random() * 2 + 4
 
     return {
         style: {
@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
     height: 100px;
     border-radius: 50% 50% 0 0;
     filter: url(#bubble);
-    background-color: #d96b6b7b;
+    background-color: #d96b6ba3;
     /* overflow-x: hidden; */
 }
 
@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
     z-index: -1;
     position: absolute;
     border-radius: 50%;
-    background-color: #d96b6b7b;
+    background-color: #d96b6ba3;
     width: var(--s);
     height: var(--s);
     left: var(--x);
