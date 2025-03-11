@@ -4,17 +4,17 @@
         <div class="main-footer">
             <div class="footer-columns">
                 <!-- 每个栏目增加语义化类名 -->
-                <div class="footer-col nav-section">
+                <!-- <div class="footer-col nav-section">
                     <h3 class="footer-title">主页</h3>
                     <nav class="footer-links">
                         <a @click="handleToRouter('/introduction/1')">？？？？</a>
                         <a @click="handleToRouter('/introduction/1')">？？？？</a>
                         <a @click="handleToRouter('/introduction/1')">？？？？</a>
                     </nav>
-                </div>
+                </div> -->
 
                 <!-- 案例展示部分 -->
-                <div class="footer-col case-section">
+                <!-- <div class="footer-col case-section">
                     <h3 class="footer-title">购买商品</h3>
                     <nav class="footer-links">
                         <a @click="handleToRouter('/product')">？？？？</a>
@@ -23,20 +23,20 @@
                         <a @click="handleToRouter('/product')">？？？？</a>
                         <a @click="handleToRouter('/product')">？？？？</a>
                     </nav>
-                </div>
+                </div> -->
 
                 <!-- 新闻资讯部分 -->
-                <div class="footer-col news-section">
+                <!-- <div class="footer-col news-section">
                     <h3 class="footer-title">个人中心</h3>
                     <nav class="footer-links">
                         <a @click="handleToRouter('/mycenter')">？？？？</a>
                         <a @click="handleToRouter('/mycenter')">？？？？</a>
                         <a @click="handleToRouter('/mycenter')">？？？？</a>
                     </nav>
-                </div>
+                </div> -->
 
                 <!-- 联系方式部分 -->
-                <div class="footer-col contact-section">
+                <!-- <div class="footer-col contact-section">
                     <h3 class="footer-title">联系我们</h3>
                     <div class="contact-content">
                         <div :default-active="activeIndex" class="city-selector" mode="horizontal"
@@ -49,7 +49,8 @@
                             <p>{{ cityInfomation[showCity].address }}</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
+                <MoreInfo></MoreInfo>
             </div>
         </div>
 
@@ -71,6 +72,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import MoreInfo from './MoreInfo.vue'
 
 const router = useRouter()
 

@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
 
 .product-image {
     position: absolute;
-    height: 95%;
+    height: 100%;
     left: 52.5%;
     pointer-events: none;
     user-select: none;
@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
     width: 100%;
     display: flex;
     perspective: 1500px;
-    height: 95%;
+    height: 100%;
     border-radius: 10px;
     /* margin-left: 1vw; */
     background-color: #d96b6b;
@@ -345,7 +345,7 @@ onBeforeUnmount(() => {
 
 .right-panel {
     width: 47.5%;
-    height: 95%;
+    height: 100%;
     /* margin-left: 2.5vw; */
     padding: 20px;
     background: #fffffff2;
@@ -402,7 +402,7 @@ ul {
 }
 
 li {
-    margin: 10px 10vh;
+    margin: 10px 10vh 10px 10px;
     padding: 8px 12px;
     background: #f8f8f8;
     border-radius: 4px;
