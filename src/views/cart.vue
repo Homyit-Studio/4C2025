@@ -33,13 +33,22 @@
                   @change="(selected) => handleCheck(i.skuId, selected)"
                 />
               </td>
-              <td>
+             <td>
                 <div class="goods">
-                  <img :src="i.picture" alt="Product Image" />
+                  <div class="image-container">
+                      <el-popover
+                      placement="right"
+                      :width="200"
+                      trigger="hover"
+                      >
+                        <template #reference>
+                          <img :src="i.picture" alt="Product Image" class="product-image" />
+                        </template>
+                        <img :src="i.picture" alt="Product Image" class="zoom-image" />
+                      </el-popover>
+                  </div>
                   <div v-if="!i.isEditing">
-                    <p class="name ellipsis">
-                      {{ i.name }}
-                    </p>
+                    <p class="name ellipsis">{{ i.name }}</p>
                   </div>
                   <div v-else>
                     <el-input v-model="i.name" placeholder="请输入商品名称"></el-input>
@@ -165,7 +174,8 @@ const handleCheckout = () => {
 .cart {
   background: #fff;
   color: #666;
-  overflow-x: auto; /* 小屏幕时出现水平滚动条 */
+  overflow-x: auto;
+   /* 小屏幕时出现水平滚动条 */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -174,7 +184,8 @@ const handleCheckout = () => {
   border-spacing: 0;
   border-collapse: collapse;
   line-height: 24px;
-  min-width: 1200px; /* 确保表格在小屏幕下不会过度压缩 */
+  min-width: 1200px; 
+  /* 确保表格在小屏幕下不会过度压缩 */
   width: 100%;
 }
 
@@ -258,6 +269,32 @@ const handleCheckout = () => {
   color: #999;
 }
 
+/* hover放大部分效果样式 */
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.zoom-image {
+  width: 100%; /* 放大图片的宽度 */
+  height: 100%; /* 放大图片的高度 */
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-container:hover .product-image {
+  transform: scale(1.05); /* 鼠标悬停时图片稍微放大 */
+}
 .action {
   display: flex;
   background: #fff;
