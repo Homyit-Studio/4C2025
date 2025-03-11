@@ -31,7 +31,7 @@ const products = ref([
 
 const selectedBrand = ref('All');
 const divContainer = ref(null);
-const imgWidth = 400;
+const imgWidth = 300;
 const filteredProducts = ref([]);
 let resizeObserver = null;
 
@@ -69,16 +69,23 @@ function setPosition() {
         const minHeight = Math.min(...columnHeights);
         const columnIndex = columnHeights.indexOf(minHeight);
 
-        card.style.transform = `translate(
-      ${columnIndex * (imgWidth + space)}px,
-      ${minHeight}px
-    )`;
+        // 使用直接定位代替transform
+        card.style.left = `${columnIndex * (imgWidth + space)}px`;
+        card.style.top = `${minHeight}px`;
 
         columnHeights[columnIndex] += card.offsetHeight + space;
     });
 
     divContainer.value.style.height = Math.max(...columnHeights) + 'px';
 }
+
+
+const recalculateLayout = debounce(() => {
+    nextTick(() => {
+        setPosition();
+    });
+}, 100);
+
 
 function calculateLayout(containerWidth) {
     const columns = Math.max(Math.floor(containerWidth / (imgWidth + 20)), 1);
@@ -127,6 +134,72 @@ function debounce(fn, delay) {
         timeout = setTimeout(() => fn.apply(this, args), delay);
     };
 }
+
+
+const activeProduct = ref(null)
+const isDragging = ref(false)
+const cartZone = ref(null)
+const isOverCart = ref(false)
+
+// 在拖拽相关事件中触发
+const startDrag = (event, product) => {
+    isDragging.value = true
+    event.dataTransfer.setData('product', JSON.stringify(product))
+
+    const currentCard = event.target.closest('.product-card')
+    currentCard.style.opacity = '0.7'
+    currentCard.style.zIndex = '999'
+    currentCard.style.transition = 'none'
+}
+
+const endDrag = () => {
+    isDragging.value = false
+    isOverCart.value = false
+
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.style.opacity = ''
+        card.style.zIndex = ''
+        card.style.transition = ''
+        card.style.pointerEvents = ''
+    })
+
+    recalculateLayout()
+}
+
+// 显示商品详情
+const showProductDetail = (product) => {
+    activeProduct.value = product
+}
+
+// 隐藏商品详情
+const hideProductDetail = () => {
+    activeProduct.value = null
+}
+
+// 拖拽经过购物车区域
+const dragOverCart = (event) => {
+    event.preventDefault()
+    isOverCart.value = true
+}
+
+// 离开购物车区域
+const dragLeaveCart = () => {
+    isOverCart.value = false
+}
+
+// 放入购物车
+const dropToCart = (event) => {
+    event.preventDefault()
+    const product = JSON.parse(event.dataTransfer.getData('product'))
+    // TODO: 这里添加购物车逻辑
+    console.log('Added to cart:', product)
+    isOverCart.value = false
+
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.style.opacity = '';
+        card.style.zIndex = '';
+    });
+}
 </script>
 
 <template>
@@ -143,7 +216,9 @@ function debounce(fn, delay) {
                 <div v-for="product in filteredProducts" :key="product.id" class="product-card" :style="{
                     width: imgWidth + 'px',
                     transition: 'transform 0.3s ease-out'
-                }">
+                }" :class="{ 'blur': activeProduct && activeProduct.id !== product.id }" draggable="true"
+                    @mouseenter="showProductDetail(product)" @mouseleave="hideProductDetail"
+                    @dragstart="startDrag($event, product)" @dragend="endDrag">
                     <img :src="product.img" :alt="product.name" :style="{}" @load="handleImageLoad">
                     <div class="product-info">
                         <div class="product-name">{{ product.name }}</div>
@@ -151,8 +226,24 @@ function debounce(fn, delay) {
                             ￥{{ Math.floor(Math.random() * 1000) }}
                         </div>
                     </div>
+                    <!-- 商品详情卡片 -->
+                    <div v-if="activeProduct && activeProduct.id === product.id" class="product-detail">
+                        <h3>{{ product.name }}</h3>
+                        <p>品牌: {{ product.brand }}</p>
+                        <p>价格: ￥{{ Math.floor(Math.random() * 1000) }}</p>
+                        <p>库存: {{ Math.floor(Math.random() * 100) }}件</p>
+                        <p>描述: 这是一款性能强大的智能手机...</p>
+                        <div class="drag-hint">拖拽以加入购物车</div>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- 购物车提示区域 -->
+        <div class="cart-zone" ref="cartZone" :class="{ 'active': isOverCart }" @dragover="dragOverCart"
+            @dragleave="dragLeaveCart" @drop="dropToCart">
+            <div class="cart-icon">+</div>
+            <div class="cart-text">拖拽至此加入购物车</div>
         </div>
     </div>
 </template>
@@ -199,13 +290,137 @@ function debounce(fn, delay) {
     padding-left: 20px;
     width: 94%;
     background-color: #fff;
-    transition: height 0.3s ease-out;
+    transition: height 0.5s ease-out;
+}
+
+/* 添加布局变化的入场动画 */
+
+
+/* 应用入场动画 */
+.product-card {
+    animation: cardEnter 0.6s ease forwards;
+}
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .product-card {
     position: absolute;
-    will-change: transform;
+    will-change: transform, opacity;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: shake 0.5s ease-in-out 3;
+    animation-play-state: paused;
+    position: absolute;
+    will-change: top, left, opacity;
+    transition:
+        top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        transform 0.2s ease;
+    transform: translateZ(0);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation-play-state: running;
+}
+
+
+/* 拖拽时的状态 */
+.product-card[draggable="true"] {
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+
+.product-detail {
+    position: absolute;
+    font-size: 32px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    transform: translateY(100%);
+    animation: slideUp 0.3s forwards;
+    z-index: 2;
+}
+
+.blur {
+    filter: blur(5px);
+    transition: filter 0.3s;
+}
+
+.cart-zone {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 100px;
+    border: 2px dashed #4a90e2;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.cart-zone.active {
+    background: rgba(74, 144, 226, 0.1);
+    border-color: #357abd;
+}
+
+.cart-icon {
+    font-size: 40px;
+    color: #4a90e2;
+}
+
+.cart-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }
 
 .product-card img {
@@ -233,20 +448,6 @@ function debounce(fn, delay) {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-.product-card {
-    width: 200px;
-    background: #fffffff9;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
 
 
 .product-image {
