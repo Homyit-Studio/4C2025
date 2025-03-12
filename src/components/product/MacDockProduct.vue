@@ -121,11 +121,6 @@ onMounted(() => {
     activeRotateY.value = 0
 })
 
-onBeforeUnmount(() => {
-    clearInterval(autoPlayInterval.value)
-})
-
-
 
 // 原有逻辑
 
