@@ -1,11 +1,9 @@
 <template>
- <!-- 导航栏 -->
+  <!-- 导航栏 -->
   <NavHeader />
 
   <div class="order-container">
-
     <el-tabs @tab-change="tabChange">
-
       <!-- tab切换 -->
       <el-tab-pane
         v-for="item in tabTypes"
@@ -15,7 +13,6 @@
 
       <!-- 主体内容 -->
       <div class="main-container">
-
         <!-- 无订单数据 -->
         <div class="holder-container" v-if="orderList.length === 0">
           <el-empty description="暂无订单数据" />
@@ -24,7 +21,6 @@
         <div v-else>
           <!-- 订单列表 -->
           <div class="order-item" v-for="order in orderList" :key="order.id">
-
             <!-- 头部 -->
             <div class="head">
               <span>下单时间：{{ order.createTime }}</span>
@@ -38,7 +34,6 @@
 
             <!-- 身体部分 -->
             <div class="body">
-
               <!-- 产品信息部分 -->
               <div class="column goods">
                 <ul>
@@ -47,9 +42,7 @@
                       <img :src="item.image" alt="" />
                     </a>
                     <div class="info">
-                      <p class="name ellipsis-2">
-                        {{ item.name }}
-                      </p>
+                      <p class="name ellipsis-2">{{ item.name }}</p>
                       <p class="attr ellipsis">
                         <span>{{ item.attrsText }}</span>
                       </p>
@@ -63,15 +56,6 @@
               <!-- 订单状态 -->
               <div class="column state">
                 <p>{{ fomartPayState(order.orderState) }}</p>
-                <!-- <p v-if="order.orderState === 3">
-                  <a href="javascript:;" class="green">查看物流</a>
-                </p>
-                <p v-if="order.orderState === 4">
-                  <a href="javascript:;" class="green">评价商品</a>
-                </p>
-                <p v-if="order.orderState === 5">
-                  <a href="javascript:;" class="green">查看评价</a>
-                </p> -->
               </div>
 
               <!-- 商品价格 -->
@@ -83,18 +67,10 @@
 
               <!-- 操作部分 -->
               <div class="column action">
-                <el-button
-                  v-if="order.orderState === 1"
-                  type="primary"
-                  size="small"
-                >
+                <el-button v-if="order.orderState === 1" type="primary" size="small">
                   立即付款
                 </el-button>
-                <el-button
-                  v-if="order.orderState === 3"
-                  type="primary"
-                  size="small"
-                >
+                <el-button v-if="order.orderState === 3" type="primary" size="small">
                   确认收货
                 </el-button>
                 <p><a href="javascript:;">查看详情</a></p>
@@ -108,7 +84,6 @@
                   <a href="javascript:;">取消订单</a>
                 </p>
               </div>
-              
             </div>
           </div>
         </div>
@@ -122,8 +97,8 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import NavHeader from '@/components/index/NavHeader.vue';
-import shortFooter from '@/components/shortFooter.vue';
+import NavHeader from '@/components/index/NavHeader.vue'
+import shortFooter from '@/components/shortFooter.vue'
 
 // tab列表
 const tabTypes = [
@@ -151,12 +126,6 @@ const fomartPayState = (payState) => {
 
 // 订单列表
 const orderList = ref([])
-const total = ref(0)
-const params = ref({
-  orderState: 0,
-  page: 1,
-  pageSize: 2
-})
 
 // 模拟API响应数据
 const mockData = [
@@ -168,7 +137,7 @@ const mockData = [
     skus: [
       {
         id: 101,
-        image: 'https://example.com/product1.jpg',
+        image: './src/assets/phone.png',
         name: '商品1',
         attrsText: '颜色: 红色, 尺寸: M',
         realPay: 100,
@@ -185,7 +154,7 @@ const mockData = [
     skus: [
       {
         id: 102,
-        image: 'https://example.com/product2.jpg',
+        image: './src/assets/phone.png',
         name: '商品2',
         attrsText: '颜色: 蓝色, 尺寸: L',
         realPay: 200,
@@ -197,35 +166,48 @@ const mockData = [
   }
 ]
 
-const getUserOrder = () => {
-  // 模拟根据条件筛选数据
-  const filteredData = mockData.filter(item => {
-    if (params.value.orderState === 0) {
-      return true
-    }
-    return item.orderState === params.value.orderState
-  })
-
-  const startIndex = (params.value.page - 1) * params.value.pageSize
-  const endIndex = startIndex + params.value.pageSize
-  orderList.value = filteredData.slice(startIndex, endIndex)
-  total.value = filteredData.length
+// 获取订单数据
+const getUserOrder = (orderState = 0) => {
+  if (orderState === 0) {
+    // 如果 orderState 为 0，显示全部订单
+    orderList.value = mockData
+  } else {
+    // 否则根据 orderState 筛选对应的订单
+    orderList.value = mockData.filter((item) => item.orderState === orderState)
+  }
 }
 
+// 组件挂载时获取订单数据
 onMounted(() => getUserOrder())
 
-// 导航栏切换
-const tabChange = (type) => {
-  params.value.orderState = type
-  getUserOrder()
-}
+// 导航栏切换时触发
+const tabChange = (index) => {
+  // 根据索引值找到对应的 tabTypes 中的 name
+  const selectedTab = tabTypes[index]
+  if (!selectedTab) return
 
+  // 根据 name 映射到 orderState
+  const orderStateMap = {
+    all: 0,
+    unpay: 1,
+    deliver: 2,
+    receive: 3,
+    comment: 4,
+    complete: 5,
+    cancel: 6
+  }
+  const orderState = orderStateMap[selectedTab.name]
+
+  // 调用获取订单数据的函数
+  getUserOrder(orderState)
+}
 </script>
 
 <style scoped lang="scss">
 .order-container {
   padding: 10px 20px;
   padding-top: 50px;
+  background-color: #fff;
 
   .pagination-container {
     display: flex;
@@ -283,12 +265,15 @@ const tabChange = (type) => {
 
   .body {
     display: flex;
+    flex-wrap: wrap; /* 允许内容换行 */
     align-items: stretch;
 
     .column {
-      border-left: 1px solid #f5f5f5;
+      border-left: 3px solid #f5f5f5;
       text-align: center;
       padding: 20px;
+      flex: 1; /* 允许列自动调整宽度 */
+      min-width: 200px; /* 设置最小宽度 */
 
       > p {
         padding-top: 10px;
@@ -308,15 +293,25 @@ const tabChange = (type) => {
             border-bottom: 1px solid #f5f5f5;
             padding: 10px;
             display: flex;
+            flex-wrap: wrap; /* 允许内容换行 */
 
             &:last-child {
               border-bottom: none;
             }
 
             .image {
-              width: 70px;
-              height: 70px;
+              width: 100px;
+              height: 100px;
               border: 1px solid #f5f5f5;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* 确保图片填充容器 */
+              }
             }
 
             .info {
@@ -355,18 +350,10 @@ const tabChange = (type) => {
 
       &.state {
         width: 120px;
-
-        .green {
-          color: green;
-        }
       }
 
       &.amount {
         width: 200px;
-
-        .red {
-          color: red;
-        }
       }
 
       &.action {
@@ -374,10 +361,31 @@ const tabChange = (type) => {
 
         a {
           display: block;
+          color: #000;
+          text-decoration: none;
 
           &:hover {
-            color: green;
+            color: rgb(94, 164, 225);
           }
+        }
+      }
+    }
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .order-item {
+    .body {
+      flex-direction: column; /* 小屏幕下垂直排列 */
+
+      .column {
+        border-left: none;
+        border-top: 3px solid #f5f5f5;
+        min-width: 100%; /* 小屏幕下占满宽度 */
+
+        &:first-child {
+          border-top: none;
         }
       }
     }
