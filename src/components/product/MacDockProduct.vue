@@ -1,4 +1,19 @@
 <template>
+    <div class="left-panel">
+        <div class="carousel-container" @mouseover="isHover = true" @mouseout="isHover = false" @click="resetAutoPlay">
+            <div class="scroller" :style="scrollerStyle" @wheel="handleWheel">
+                <div v-for="(item, index) in manufacturers" :key="index" class="item" :style="getItemStyle(index)"
+                    @click="handleClickItem(index)">
+                    {{ item.name }}
+                </div>
+            </div>
+
+            <div class="toptitleup" style="transform: scale(0.5);">
+                <div class="mouse"></div>
+            </div>
+            <!-- <p class="mousep">鼠标滚动</p> -->
+        </div>
+    </div>
     <transition name="fade">
         <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
             ref="dock">
@@ -13,7 +28,101 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
+// 手机厂商数据
+const manufacturers = [
+    {
+        name: '华为',
+
+    },
+    {
+        name: '苹果',
+
+    },
+    {
+        name: '小米',
+
+    },
+    {
+        name: 'OPPO',
+
+    },
+    {
+        name: '三星',
+
+    },
+    {
+        name: 'VIVO',
+
+    },
+    {
+        name: '中兴',
+    }
+]
+// 动态计算参数
+const itemCount = computed(() => manufacturers.length)
+const itemAngle = computed(() => 360 / itemCount.value) // 每个项目的旋转角度
+const radius = 10 * manufacturers.length // 3D旋转半径
+
+const activeRotateY = ref(0)
+
+// 当前选中的厂商
+const selectedManufacturer = computed(() =>
+    manufacturers[activeIndex.value]
+)
+// 激活索引计算
+const activeIndex = computed(() => {
+    const angle = -activeRotateY.value; // 使用反向角度计算
+    const normalized = (angle % 360 + 360) % 360;
+    return Math.round(normalized / itemAngle.value) % itemCount.value;
+})
+
+// 修改后的点击处理
+const handleClickItem = (index) => {
+    const targetAngle = -index * itemAngle.value // 使用负角度旋转
+    activeRotateY.value = targetAngle
+}
+
+// 修改后的3D滚动样式
+const scrollerStyle = computed(() => ({
+    transform: `rotateX(${activeRotateY.value}deg)`, // 改为Y轴旋转
+    transformStyle: 'preserve-3d'
+}))
+
+// 修改后的项目样式生成
+const getItemStyle = (index) => {
+    const rotateY = index * itemAngle.value
+    return {
+        transform: `
+            rotateX(${rotateY}deg) 
+            translateZ(${radius}px)
+        `,
+        // opacity: 1 - Math.abs(index - activeIndex.value) * 0.3,
+        // filter: `brightness(${1 - Math.abs(index - activeIndex.value) * 0.3})`
+    }
+}
+
+// 滚轮处理
+const handleWheel = (e) => {
+    e.preventDefault()
+    const delta = Math.sign(e.deltaY)  // 获取滚动方向
+    // 每次滚动旋转一个项目的角度（带方向）
+    activeRotateY.value += delta * itemAngle.value * -1 // 乘以-1修正旋转方向
+}
+
+// 初始化位置
+onMounted(() => {
+    activeRotateY.value = 0
+})
+
+
+onMounted(() => {
+    activeRotateY.value = 0
+})
+
+
+// 原有逻辑
 
 
 const props = defineProps({
@@ -116,6 +225,68 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 </script>
 
 <style scoped>
+.left-panel {
+    z-index: 10;
+    right: 100px;
+    top: 50%;
+    position: fixed;
+    /* 控制可视区域高度 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 内容垂直居中 */
+}
+
+.carousel-container {
+    width: 100%;
+    display: flex;
+    perspective: 1500px;
+    height: 100%;
+    border-radius: 10px;
+    /* margin-left: 1vw; */
+    background-color: #d96b6b;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+    position: relative;
+}
+
+.scroller {
+    width: 8vw;
+    /* 与item宽度一致 */
+    height: 60px;
+    /* 与item高度一致 */
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.item {
+    position: absolute;
+    width: 100%;
+    /* 继承scroller宽度 */
+    height: 100%;
+    /* 继承scroller高度 */
+    background: white;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition:
+        opacity 0.3s,
+        transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.item:hover {
+    background: #f8f8f8;
+}
+
+
+
 .menu {
     z-index: 10;
     position: fixed;
@@ -241,4 +412,305 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
         height: 10px;
     }
 }
+
+
+
+
+
+
+
+
+
+/* 鼠标动画 */
+.toptitleup {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-size: 96.97%;
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    transform: scale(0.5);
+}
+
+.mouse {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-size: 96.97%;
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 auto;
+    background: #4e5559 linear-gradient(transparent, transparent 50%, #fff 0, #fff);
+    position: relative;
+    width: 52px;
+    height: 88px;
+    border-radius: 100px;
+    background-size: 225%;
+    animation: colorSlide 5s linear infinite, nudgeMouse 5s ease-out infinite;
+}
+
+@keyframes colorSlide {
+    0% {
+        background-position: 0 100%;
+    }
+
+    20% {
+        background-position: 0 0;
+    }
+
+    21% {
+        background-color: #4e5559;
+    }
+
+    29.99% {
+        background-color: #fff;
+        background-position: 0 0;
+    }
+
+    30% {
+        background-color: #4e5559;
+        background-position: 0 100%;
+    }
+
+    50% {
+        background-position: 0 0;
+    }
+
+    51% {
+        background-color: #4e5559;
+    }
+
+    59.99% {
+        background-color: #fff;
+        background-position: 0 0;
+    }
+
+    60% {
+        background-color: #4e5559;
+        background-position: 0 100%;
+    }
+
+    80% {
+        background-position: 0 0;
+    }
+
+    81% {
+        background-color: #4e5559;
+    }
+
+    89.99%,
+    100% {
+        background-color: #fff;
+    }
+}
+
+@keyframes nudgeMouse {
+    0% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(8px);
+    }
+
+    30% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+
+    60% {
+        transform: translateY(0);
+    }
+
+    80% {
+        transform: translateY(8px);
+    }
+
+    90% {
+        transform: translateY(0);
+    }
+}
+
+.mouse:before {
+    width: 46px;
+    height: 82px;
+    background-color: #222a30;
+    border-radius: 100px;
+}
+
+.mouse:after {
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    animation: trackBallSlide 5s linear infinite;
+}
+
+@keyframes trackBallSlide {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+
+    6% {
+        opacity: 1;
+        transform: scale(.9) translateY(5px);
+    }
+
+    14% {
+        opacity: 0;
+        transform: scale(.4) translateY(40px);
+    }
+
+    15%,
+    19% {
+        opacity: 0;
+        transform: scale(.4) translateY(-20px);
+    }
+
+    28%,
+    29.99% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+
+    36% {
+        opacity: 1;
+        transform: scale(.9) translateY(5px);
+    }
+
+    44% {
+        opacity: 0;
+        transform: scale(.4) translateY(40px);
+    }
+
+    45%,
+    49% {
+        opacity: 0;
+        transform: scale(.4) translateY(-20px);
+    }
+
+    58%,
+    59.99% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+
+    66% {
+        opacity: 1;
+        transform: scale(.9) translateY(5px);
+    }
+
+    74% {
+        opacity: 0;
+        transform: scale(.4) translateY(40px);
+    }
+
+    75%,
+    79% {
+        opacity: 0;
+        transform: scale(.4) translateY(-20px);
+    }
+
+    88%,
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(-20px);
+    }
+}
+
+
+.mouse:after,
+.mouse:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+
+/* p.mousep {
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 12px;
+    text-indent: 12px;
+
+    color: #fff;
+    animation: colorText 5s ease-out infinite, nudgeText 5s ease-out infinite;
+} */
+/* 
+@keyframes colorText {
+    21% {
+        color: hsla(0, 0%, 100%, 0);
+    }
+
+    30% {
+        color: #fff;
+    }
+
+    51% {
+        color: hsla(0, 0%, 100%, 0);
+    }
+
+    60% {
+        color: #fff;
+    }
+
+    81% {
+        color: hsla(0, 0%, 100%, 0);
+    }
+
+    90% {
+        color: #fff;
+    }
+
+}
+
+@keyframes nudgeText {
+    0% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(2px);
+    }
+
+    30% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+
+    60% {
+        transform: translateY(0);
+    }
+
+    80% {
+        transform: translateY(2px);
+    }
+
+    90% {
+        transform: translateY(0);
+    }
+} */
 </style>

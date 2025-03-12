@@ -219,7 +219,9 @@ const dropToCart = (event) => {
                 }" :class="{ 'blur': activeProduct && activeProduct.id !== product.id }" draggable="true"
                     @mouseenter="showProductDetail(product)" @mouseleave="hideProductDetail"
                     @dragstart="startDrag($event, product)" @dragend="endDrag">
-                    <img :src="product.img" :alt="product.name" :style="{}" @load="handleImageLoad">
+                    <img :src="product.img" :alt="product.name"
+                        :style="{ opacity: activeProduct && activeProduct.id === product.id ? '1' : '0.8' }"
+                        @load="handleImageLoad">
                     <div class="product-info">
                         <div class="product-name">{{ product.name }}</div>
                         <div class="product-price">
@@ -348,17 +350,19 @@ const dropToCart = (event) => {
 
 .product-detail {
     position: absolute;
-    font-size: 32px;
+    font-size: 16px;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 60%;
     background: rgba(255, 255, 255, 0.95);
     padding: 20px;
     transform: translateY(100%);
     animation: slideUp 0.3s forwards;
     z-index: 2;
 }
+
+
 
 .blur {
     filter: blur(5px);
@@ -448,40 +452,35 @@ const dropToCart = (event) => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-
-.product-image {
-    width: calc(100% - 10px);
-    margin: 5px;
-    height: calc(100% - 40px);
-    object-fit: cover;
-}
-
 .product-info {
-    padding: 8px 12px;
-    height: 40px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    transform: translateY(100%);
+    animation: slideUp 0.3s forwards;
+    z-index: 2;
+    /* padding: 8px 12px; */
+    /* height: 40px; */
     /* padding: 12px; */
-    background: linear-gradient(to bottom, #fffffff9, #4a90e2);
+    /* background: linear-gradient(to bottom, #fffffff9, #4a90e2); */
     display: flex;
     align-items: center;
 }
 
-.product-image {
-    flex: 1;
-    min-height: 0;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
-}
 
 .product-name {
-    font-size: 14px;
+    font-size: 1vw;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 .product-price {
     color: #e63946;
-    font-size: 13px;
+    font-size: 1.3vw;
     font-weight: bold;
 }
 
