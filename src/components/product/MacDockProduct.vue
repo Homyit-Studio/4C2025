@@ -7,81 +7,74 @@
                     {{ item.name }}
                 </div>
             </div>
-
-            <div class="toptitleup" style="transform: scale(0.5);">
-                <div class="mouse"></div>
+            <div style="margin-top: 40px; text-align:center;">
+                <div class="toptitleup" style="transform: scale(0.5);">
+                    <div class="mouse"></div>
+                </div>
+                <p class="mousep">同上下滚动</p>
             </div>
-            <!-- <p class="mousep">鼠标滚动</p> -->
+
         </div>
     </div>
-    <transition name="fade">
-        <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
-            ref="dock">
-            <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
-                <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
-                    <img :src="icon" type="image/svg+xml" class="icon"></img>
-                </div>
-                <div class="gap" v-if="index !== icons.length - 1"></div>
+
+    <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
+        ref="dock">
+        <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
+            <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
+                <img :src="icon" type="image/svg+xml" class="icon"></img>
             </div>
+            <div class="gap" v-if="index !== icons.length - 1"></div>
         </div>
-    </transition>
+    </div>
+
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-// 手机厂商数据
-const manufacturers = [
-    {
-        name: '华为',
-
+const props = defineProps({
+    manufacturers: {
+        type: Array,
+        required: true
     },
-    {
-        name: '苹果',
-
-    },
-    {
-        name: '小米',
-
-    },
-    {
-        name: 'OPPO',
-
-    },
-    {
-        name: '三星',
-
-    },
-    {
-        name: 'VIVO',
-
-    },
-    {
-        name: '中兴',
+    icons: {
+        type: Array,
+        required: true
     }
-]
-// 动态计算参数
-const itemCount = computed(() => manufacturers.length)
-const itemAngle = computed(() => 360 / itemCount.value) // 每个项目的旋转角度
-const radius = 10 * manufacturers.length // 3D旋转半径
+});
+console.log(props.manufacturers)
+
+const emit = defineEmits(['brand-change', 'item-click'])
+
+// 动态计算参数 - 使用 props.manufacturers
+const itemCount = computed(() => props.manufacturers.length)
+const itemAngle = computed(() => 360 / itemCount.value)
+const radius = computed(() => 10 * props.manufacturers.length)
 
 const activeRotateY = ref(0)
 
-// 当前选中的厂商
-const selectedManufacturer = computed(() =>
-    manufacturers[activeIndex.value]
-)
 // 激活索引计算
 const activeIndex = computed(() => {
-    const angle = -activeRotateY.value; // 使用反向角度计算
+    const angle = -activeRotateY.value;
     const normalized = (angle % 360 + 360) % 360;
     return Math.round(normalized / itemAngle.value) % itemCount.value;
 })
 
 // 修改后的点击处理
 const handleClickItem = (index) => {
-    const targetAngle = -index * itemAngle.value // 使用负角度旋转
+    const targetAngle = -index * itemAngle.value
     activeRotateY.value = targetAngle
+    emit('brand-change', props.manufacturers[index].id)
+}
+
+// 修改滚轮处理
+const handleWheel = (e) => {
+    e.preventDefault()
+    const delta = Math.sign(e.deltaY)
+    activeRotateY.value += delta * itemAngle.value * -1
+
+    const currentIndex = activeIndex.value
+    emit('brand-change', props.manufacturers[currentIndex].id)
 }
 
 // 修改后的3D滚动样式
@@ -96,19 +89,12 @@ const getItemStyle = (index) => {
     return {
         transform: `
             rotateX(${rotateY}deg) 
-            translateZ(${radius}px)
+            translateZ(${radius.value}px)
         `,
+        opacity: activeIndex.value === index ? 1 : 0.6
         // opacity: 1 - Math.abs(index - activeIndex.value) * 0.3,
         // filter: `brightness(${1 - Math.abs(index - activeIndex.value) * 0.3})`
     }
-}
-
-// 滚轮处理
-const handleWheel = (e) => {
-    e.preventDefault()
-    const delta = Math.sign(e.deltaY)  // 获取滚动方向
-    // 每次滚动旋转一个项目的角度（带方向）
-    activeRotateY.value += delta * itemAngle.value * -1 // 乘以-1修正旋转方向
 }
 
 // 初始化位置
@@ -116,31 +102,7 @@ onMounted(() => {
     activeRotateY.value = 0
 })
 
-
-onMounted(() => {
-    activeRotateY.value = 0
-})
-
-
 // 原有逻辑
-
-
-const props = defineProps({
-    icons: {
-        type: Array,
-        required: true
-    },
-    titles: {  // 新增商品名称属性
-        type: Array,
-        required: true
-    },
-    activeIndex: {  // 新增当前激活项
-        type: Number,
-        default: 0
-    }
-})
-
-const emit = defineEmits(['item-click'])
 
 // 颜色生成逻辑（示例：HSL渐变色）
 const getItemColor = (index) => {
@@ -150,6 +112,8 @@ const getItemColor = (index) => {
 
 // 点击处理
 const handleItemClick = (index) => {
+    console.log('点击了', index)
+    // 触发页面切换事件
     emit('item-click', index)
 }
 
@@ -227,37 +191,39 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 <style scoped>
 .left-panel {
     z-index: 10;
-    right: 100px;
-    top: 50%;
+    right: 150px;
+    top: 35%;
     position: fixed;
     /* 控制可视区域高度 */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    height: 300px;
     /* 内容垂直居中 */
 }
 
 .carousel-container {
     width: 100%;
-    display: flex;
+    /* display: flex; */
     perspective: 1500px;
     height: 100%;
     border-radius: 10px;
     /* margin-left: 1vw; */
     background-color: #d96b6b;
     position: relative;
-    flex-direction: column;
-    align-items: center;
+    /* flex-direction: column; */
+    /* align-items: center; */
     /* 垂直居中 */
-    justify-content: center;
+    /* justify-content: center; */
     /* 水平居中 */
-    position: relative;
+    /* position: relative; */
 }
 
 .scroller {
-    width: 8vw;
+    /* width: vw; */
     /* 与item宽度一致 */
     height: 60px;
+    margin-top: 70px;
     /* 与item高度一致 */
     transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
@@ -647,7 +613,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     margin: auto;
 }
 
-/* p.mousep {
+p.mousep {
     font-weight: 300;
     font-size: 10px;
     letter-spacing: 12px;
@@ -655,8 +621,8 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 
     color: #fff;
     animation: colorText 5s ease-out infinite, nudgeText 5s ease-out infinite;
-} */
-/* 
+}
+
 @keyframes colorText {
     21% {
         color: hsla(0, 0%, 100%, 0);
@@ -712,5 +678,5 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     90% {
         transform: translateY(0);
     }
-} */
+}
 </style>
