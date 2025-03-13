@@ -1,15 +1,13 @@
 <template>
-    <transition name="fade">
-        <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
-            ref="dock">
-            <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
-                <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
-                    <img :src="icon" type="image/svg+xml" class="icon"></img>
-                </div>
-                <div class="gap" v-if="index !== icons.length - 1"></div>
+    <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
+        ref="dock">
+        <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
+            <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
+                <img :src="icon" type="image/svg+xml" class="icon"></img>
             </div>
+            <div class="gap" v-if="index !== icons.length - 1"></div>
         </div>
-    </transition>
+    </div>
 </template>
 
 <script setup>

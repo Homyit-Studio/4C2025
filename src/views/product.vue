@@ -45,14 +45,31 @@ onMounted(() => {
     animateStdDeviation()
 })
 
+const manufacturers = [
+    { name: 'All', id: 'all' },
+    { name: '苹果', id: 'Apple' },
+    { name: '三星', id: 'Samsung' },
+    { name: '小米', id: 'Xiaomi' },
+    { name: '华为', id: 'Huawei' },
+    { name: 'OPPO', id: 'Oppo' }
+];
+
+const selectedBrand = ref('all') // 新增: 管理当前选中的品牌
+
+// 新增: 处理品牌切换
+const handleBrandChange = (brandId) => {
+    selectedBrand.value = brandId
+}
+
 </script>
 
 <template>
     <NavHeader />
-    <MacDockProduct :icons="icons" :titles="titles" :activeIndex="activeIndex" @item-click="handleDockClick" />
+    <MacDockProduct :icons="icons" :titles="titles" :activeIndex="activeIndex" :manufacturers="manufacturers"
+        @item-click="handleDockClick" @brand-change="handleBrandChange" />
     <div class="maincontainer">
         <div class="item" id="item-0">
-            <BuyPhone></BuyPhone>
+            <BuyPhone :selectedBrand="selectedBrand"></BuyPhone> <!-- 新增: 传递选中的品牌 -->
         </div>
         <div class="item" id="item-1">2</div>
         <div class="item" id="item-2">3</div>
