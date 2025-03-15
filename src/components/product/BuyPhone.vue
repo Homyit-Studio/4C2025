@@ -77,9 +77,14 @@ function setPosition() {
     if (!divContainer.value) return;
 
     const containerWidth = divContainer.value.clientWidth;
-    const { columns, space } = calculateLayout(containerWidth);
+    const { columns, space, totalWidth } = calculateLayout(containerWidth);
     const columnHeights = new Array(columns).fill(0);
     const cards = divContainer.value.querySelectorAll('.product-card');
+
+    // 计算左边起始位置，使整体居中
+    const startX = (containerWidth - totalWidth) / 2;
+
+    // 确定最后一行的起始索引
     const lastRowStart = Math.floor((cards.length - 1) / columns) * columns;
 
     cards.forEach((card, index) => {
@@ -87,17 +92,21 @@ function setPosition() {
         const columnIndex = columnHeights.indexOf(minHeight);
         const isLastRow = index >= lastRowStart;
 
-        card.style.left = `${columnIndex * (imgWidth + space)}px`;
-        // 最后一行不添加底部边距
-        const bottomSpace = isLastRow ? 0 : space;
+        // 计算x坐标，考虑居中对齐
+        const x = startX + columnIndex * (imgWidth + space);
+        card.style.left = `${x}px`;
+
+        // 计算y坐标，最后一行不需要底部间距
         card.style.top = `${minHeight}px`;
 
+        // 更新列高度，最后一行不添加间距
+        const bottomSpace = isLastRow ? 0 : space;
         columnHeights[columnIndex] += card.offsetHeight + bottomSpace;
     });
 
-    divContainer.value.style.height = Math.max(...columnHeights) + 'px';
+    // 设置容器高度为最高列的高度
+    divContainer.value.style.height = `${Math.max(...columnHeights)}px`;
 }
-
 const recalculateLayout = debounce(() => {
     nextTick(() => {
         setPosition();
@@ -105,9 +114,17 @@ const recalculateLayout = debounce(() => {
 }, 100);
 
 function calculateLayout(containerWidth) {
-    const columns = Math.max(Math.floor(containerWidth / (imgWidth + 20)), 1);
-    const space = (containerWidth - columns * imgWidth) / (columns + 1);
-    return { columns, space: Math.max(space, 10) };
+    // 计算可以放置的最大列数
+    const columns = Math.floor((containerWidth - 20) / (imgWidth + 20)); // 减去容器的左右padding
+    // 计算实际间距，使卡片在容器中均匀分布
+    const totalGap = containerWidth - columns * imgWidth;
+    const space = totalGap / (columns + 1); // 包括左右边距
+
+    return {
+        columns,
+        space: Math.max(space, 10),
+        totalWidth: columns * imgWidth + (columns - 1) * space// 总宽度，用于居中
+    };
 }
 
 function initResizeObserver() {
@@ -208,7 +225,6 @@ const dropToCart = (event) => {
         card.style.zIndex = '';
     });
 }
-
 
 </script>
 
@@ -383,7 +399,7 @@ const dropToCart = (event) => {
     margin: 20px;
     padding-left: 20px;
     width: 85%;
-    background-color: #fff;
+    /* background-color: #fff; */
     transition: height 3s ease-out;
 }
 

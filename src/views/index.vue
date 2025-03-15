@@ -7,9 +7,11 @@ import Bubble from '@/components/index/Bubble.vue';
 import Title from '@/components/index/Title.vue';
 import IndexFooter from '@/components/index/IndexFooter.vue';
 import PhoneIntroduce from '@/components/index/PhoneIntroduce.vue';
+import ComputerIntroduce from '@/components/index/ComputerIntroduce.vue';
 
 const icons = ref(['/icons/icon1_home.svg', '/icons/icon2_phone.svg', '/icons/icon3_computer.svg', "/icons/icon4_plane.svg", "/icons/icon5_robot.svg", "/icons/icon6_more.svg"])
 
+const images = ref(['bg_phone.webp', 'bg_computer.png', 'bg_phone.webp', 'bg_computer.png', 'bg_phone.webp', 'bg_computer.png'])
 const handleDockClick = (index) => {
   const element = document.getElementById(`item-${index}`)
   if (element) {
@@ -62,9 +64,16 @@ const scrollContainer = ref(null)
       <PhoneIntroduce></PhoneIntroduce>
       <Bubble></Bubble>
     </div>
-    <div class="item" id="item-2">3</div>
-    <div class="item" id="item-3">4</div>
-    <div class="item" id="item-4">5</div>
+    <div class="item" id="item-2">
+      <ComputerIntroduce></ComputerIntroduce>
+      <Bubble></Bubble>
+    </div>
+    <div class="item" id="item-3">4
+      <Bubble></Bubble>
+    </div>
+    <div class="item" id="item-4">5
+      <Bubble></Bubble>
+    </div>
     <div class="footer" id="item-5">
       <IndexFooter></IndexFooter>
     </div>
@@ -72,6 +81,50 @@ const scrollContainer = ref(null)
 </template>
 
 <style scoped>
+/* 修改container样式 */
+.container {
+  position: relative;
+  overflow-y: scroll;
+  height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* 添加视差背景层 */
+.container::before {
+  content: '';
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  background-image: url('/bg_phone.webp');
+  /* 使用你的图片路径 */
+  background-size: cover;
+  background-position: center;
+  transform: translateZ(-2px) scale(3);
+  /* 通过3D变换创建视差效果 */
+  z-index: -1;
+  will-change: transform;
+  /* 优化动画性能 */
+}
+
+/* 保持原有item样式 */
+.item {
+  position: relative;
+  width: 100%;
+  height: 95vh;
+  scroll-snap-align: start;
+  /* background: rgba(255, 255, 255, 0.7); */
+  /* 添加半透明白色背景保证内容可读 */
+}
+
+/* 创建3D上下文 */
+.container {
+  perspective: 1px;
+  transform-style: preserve-3d;
+}
+
 #item-0 {
   position: relative;
   /* overflow: hidden; */
@@ -95,6 +148,7 @@ const scrollContainer = ref(null)
 }
 
 .item {
+  position: relative;
   width: 100%;
   height: 95vh;
   margin: 0 auto;
@@ -108,7 +162,7 @@ const scrollContainer = ref(null)
 
 .footer {
   width: 100%;
-  height: 60vh;
+  /* height: 60vh; */
   display: flex;
   justify-content: center;
   align-items: center;

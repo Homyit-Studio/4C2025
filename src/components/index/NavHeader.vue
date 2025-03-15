@@ -10,7 +10,7 @@
                             <stop offset="0%" stop-color="#2196F3">
                                 <animate attributeName="offset" from="0" to="1" dur="6s" begin="3s" fill="freeze" />
                             </stop>
-                            <stop offset="0%" stop-color="#BBDEFB">
+                            <stop offset="0%" stop-color="#fff">
                                 <animate attributeName="offset" from="0" to="1" dur="6s" begin="3s" fill="freeze" />
                             </stop>
                         </linearGradient>

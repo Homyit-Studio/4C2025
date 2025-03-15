@@ -52,7 +52,7 @@ const handleItemClick = (index) => {
 const dock = ref(null)
 const items = ref([])
 const gaps = ref([])
-const range = 300
+const range = 600
 const maxScale = 1.3
 const baseHeight = ref(0)
 const baseGapHeight = 20 // 基础间隙高度

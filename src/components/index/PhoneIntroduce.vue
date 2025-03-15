@@ -224,6 +224,7 @@ onBeforeUnmount(() => {
     left: 52.5%;
     pointer-events: none;
     user-select: none;
+    opacity: 0.5;
     /* 添加投影增强立体感 */
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
 }
@@ -292,7 +293,7 @@ onBeforeUnmount(() => {
     height: 100%;
     border-radius: 10px;
     /* margin-left: 1vw; */
-    background-color: #d96b6b;
+    background-color: #0000004f;
     position: relative;
     flex-direction: column;
     align-items: center;

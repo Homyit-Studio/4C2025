@@ -69,7 +69,7 @@ onMounted(() => {
 }
 
 text {
-    color: #d25b5b;
+    color: #ffffff;
     font-size: 9.6386vw;
     transition: all 0.3s;
     font-family: 'title-big';

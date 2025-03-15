@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .footer {
-    z-index: -1;
+    z-index: -2;
     position: absolute;
     width: 100%;
     height: 100px;
@@ -83,21 +83,22 @@ onBeforeUnmount(() => {
 }
 
 .bubbles {
-    z-index: -1;
+    z-index: -2;
     position: absolute;
     width: 100%;
     height: 100px;
     border-radius: 50% 50% 0 0;
     filter: url(#bubble);
-    background-color: #d96b6ba3;
+    background-color: #ffffff7d;
+    opacity: 0.5;
     /* overflow-x: hidden; */
 }
 
 .bubble {
-    z-index: -1;
+    z-index: -2;
     position: absolute;
     border-radius: 50%;
-    background-color: #d96b6ba3;
+    background-color: #ffffff;
     width: var(--s);
     height: var(--s);
     left: var(--x);
