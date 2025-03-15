@@ -286,14 +286,18 @@ const tabChange = (index) => {
       &.goods {
         flex: 1;
         padding: 0;
-        align-self: center;
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
 
         ul {
+          width: 100%; /* 确保 ul 占满父容器宽度 */
           li {
             border-bottom: 1px solid #f5f5f5;
             padding: 10px;
             display: flex;
-            flex-wrap: wrap; /* 允许内容换行 */
+            align-items: center; /* 垂直居中 */
+            gap: 10px; /* 图片和文字之间的间距 */
 
             &:last-child {
               border-bottom: none;
@@ -306,6 +310,7 @@ const tabChange = (index) => {
               display: flex;
               align-items: center;
               justify-content: center;
+              flex-shrink: 0; /* 防止图片被压缩 */
 
               img {
                 width: 100%;
@@ -315,9 +320,8 @@ const tabChange = (index) => {
             }
 
             .info {
-              width: 220px;
-              text-align: left;
-              padding: 0 10px;
+              // flex: 1; /* 占据剩余空间 */
+              text-align: center;
 
               p {
                 margin-bottom: 5px;
@@ -339,10 +343,13 @@ const tabChange = (index) => {
 
             .price {
               width: 100px;
+              text-align: right;
+              color: rgb(217, 6, 6);
             }
 
             .count {
               width: 80px;
+              text-align: right;
             }
           }
         }
@@ -354,6 +361,10 @@ const tabChange = (index) => {
 
       &.amount {
         width: 200px;
+
+        .red {
+          color: rgb(217, 6, 6);
+        }
       }
 
       &.action {
