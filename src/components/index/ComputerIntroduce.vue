@@ -7,6 +7,10 @@
             <div class="computer-introduce-container-content">
                 电脑
             </div>
+            <div class="computer-introduce-container-section">
+                电脑
+
+            </div>
         </div>
     </div>
 
@@ -38,11 +42,21 @@
 }
 
 .computer-introduce-container {
-    width: 90%;
-    height: 73vh;
-    margin-top: 5vh;
-    margin-bottom: 15vh;
+    width: 89.4vw;
+    height: 77vh;
+    margin-bottom: 11vh;
     margin-left: 1.3vw;
-    /* background-color: #fff; */
+}
+
+.computer-introduce-container-content {
+    width: 100%;
+    background-color: #000000bb;
+    height: 93%;
+}
+
+.computer-introduce-container-section {
+    width: 100%;
+    height: 7%;
+    background-color: #ffffffbb;
 }
 </style>

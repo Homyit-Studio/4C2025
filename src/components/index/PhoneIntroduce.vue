@@ -482,7 +482,7 @@ onBeforeUnmount(() => {
     height: 100%;
     border-radius: 10px;
     /* margin-left: 1vw; */
-    background-color: #00000070;
+    background-color: #000000bb;
     position: relative;
     flex-direction: column;
     align-items: center;
@@ -512,7 +512,7 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 1.2dvw;
     cursor: pointer;
     transition:
         all 0.3s ease,
@@ -541,9 +541,9 @@ onBeforeUnmount(() => {
     height: 100%;
     /* margin-left: 2.5vw; */
     padding: 20px;
-    background: #00000070;
+    background: #000000bb;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
     /* 控制可视区域高度 */
     display: flex;
     flex-direction: column;
@@ -565,6 +565,7 @@ onBeforeUnmount(() => {
     /* 为滚动条预留空间 */
     border-radius: 10px;
     border: 1px solid #ffffff;
+    background-color: #ffffff89;
     filter: drop-shadow(0 0 2px #ffffff);
     /* 自定义滚动条样式 */
     scrollbar-width: thin;
@@ -637,13 +638,13 @@ onBeforeUnmount(() => {
     color: #67C23A;
     font-weight: bold;
     margin-bottom: 8px;
-    font-size: 1vw;
+    font-size: 1.5vw;
 }
 
 .status-content {
     color: #333;
     line-height: 1.6;
-    font-size: 0.8vw;
+    font-size: 1.2vw;
     opacity: 0.9;
 }
 

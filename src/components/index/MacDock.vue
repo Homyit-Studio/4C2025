@@ -2,7 +2,10 @@
     <div class="menu" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter"
         ref="dock">
         <div v-for="(icon, index) in icons" :key="index" @click="handleItemClick(index)">
-            <div class="menu-item" :style="{ backgroundColor: getItemColor(index) }">
+            <div class="menu-item" :style="{
+                backgroundColor: getItemColor(index),
+                filter: hoverIndex === index ? `drop-shadow(0 0 20px ${getItemColor(index)})` : 'none'
+            }" @mouseenter="hoverIndex = index" @mouseleave="hoverIndex = null">
                 <img :src="icon" type="image/svg+xml" class="icon"></img>
             </div>
             <div class="gap" v-if="index !== icons.length - 1"></div>
@@ -56,6 +59,7 @@ const range = 600
 const maxScale = 1.3
 const baseHeight = ref(0)
 const baseGapHeight = 20 // 基础间隙高度
+const hoverIndex = ref(null)
 
 onMounted(() => {
     items.value = [...dock.value.querySelectorAll('.menu-item')]
@@ -214,7 +218,8 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 .menu-item {
     transition:
         transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28),
-        background-color 0.3s !important;
+        /* background-color 0.3s ease !important, */
+        filter 0.3s ease !important;
 }
 
 /* 添加点击动画 */

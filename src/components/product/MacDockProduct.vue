@@ -13,7 +13,6 @@
                 </div>
                 <p class="mousep">同上下滚动</p>
             </div>
-
         </div>
     </div>
 
@@ -191,14 +190,14 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 <style scoped>
 .left-panel {
     z-index: 10;
-    right: 150px;
-    top: 35%;
+    left: 10px;
+    top: 30%;
     position: fixed;
     /* 控制可视区域高度 */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 300px;
+    /* height: 1000px; */
     /* 内容垂直居中 */
 }
 
@@ -209,7 +208,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     height: 100%;
     border-radius: 10px;
     /* margin-left: 1vw; */
-    background-color: #d96b6b;
+    /* background-color: #d96b6b; */
     position: relative;
     /* flex-direction: column; */
     /* align-items: center; */
@@ -248,7 +247,8 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 }
 
 .item:hover {
-    background: #f8f8f8;
+    background: #4a90e2;
+    filter: drop-shadow(0 0 20px #4a90e2);
 }
 
 
@@ -306,7 +306,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 .icon {
     width: 80%;
     height: 80%;
-    color: #fff;
+    color: #4a90e2;
     pointer-events: none;
     /* 防止遮挡父级点击事件 */
     /* filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2)); */
@@ -391,7 +391,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 .toptitleup {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     font-size: 96.97%;
-    color: #fff;
+    color: #4a90e2;
     font-weight: 400;
     text-align: center;
     box-sizing: border-box;
@@ -403,13 +403,13 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 .mouse {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     font-size: 96.97%;
-    color: #fff;
+    color: #4a90e2;
     font-weight: 400;
     text-align: center;
     box-sizing: border-box;
     padding: 0;
     margin: 0 auto;
-    background: #4e5559 linear-gradient(transparent, transparent 50%, #fff 0, #fff);
+    background: #4e5559 linear-gradient(transparent, transparent 50%, #4a90e2 0, #4a90e2);
     position: relative;
     width: 52px;
     height: 88px;
@@ -432,7 +432,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     }
 
     29.99% {
-        background-color: #fff;
+        background-color: #4a90e2;
         background-position: 0 0;
     }
 
@@ -450,7 +450,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
     }
 
     59.99% {
-        background-color: #fff;
+        background-color: #4a90e2;
         background-position: 0 0;
     }
 
@@ -469,7 +469,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 
     89.99%,
     100% {
-        background-color: #fff;
+        background-color: #4a90e2;
     }
 }
 
@@ -511,7 +511,7 @@ const createCurve = (totalDis, centerY, minScale, maxScale) => {
 }
 
 .mouse:after {
-    background-color: #fff;
+    background-color: #4a90e2;
     width: 10px;
     height: 10px;
     border-radius: 100%;
@@ -619,7 +619,7 @@ p.mousep {
     letter-spacing: 12px;
     text-indent: 12px;
 
-    color: #fff;
+    color: #4a90e2;
     animation: colorText 5s ease-out infinite, nudgeText 5s ease-out infinite;
 }
 
@@ -629,7 +629,7 @@ p.mousep {
     }
 
     30% {
-        color: #fff;
+        color: #4a90e2;
     }
 
     51% {
@@ -637,7 +637,7 @@ p.mousep {
     }
 
     60% {
-        color: #fff;
+        color: #4a90e2;
     }
 
     81% {
@@ -645,7 +645,7 @@ p.mousep {
     }
 
     90% {
-        color: #fff;
+        color: #4a90e2;
     }
 
 }

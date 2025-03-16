@@ -1,27 +1,64 @@
 <script setup>
-
 import { ref, onMounted } from 'vue'
 
 const stdDeviation = ref(15)
+const titleFilter = ref('url(#disintegrate)')
 
 const animateStdDeviation = () => {
-    const duration = 3000 // 动画总时长 3 秒
+    const duration = 3000
     const startValue = stdDeviation.value
     const startTime = Date.now()
 
     const update = () => {
         const elapsed = Date.now() - startTime
-        const progress = Math.min(elapsed / duration, 1) // 限制进度不超过 1
-        stdDeviation.value = startValue * (1 - progress) // 线性递减
+        const progress = Math.min(elapsed / duration, 1)
+        stdDeviation.value = startValue * (1 - progress)
 
         if (progress < 1) {
             requestAnimationFrame(update)
         } else {
-            stdDeviation.value = 0
+            // 添加渐变效果
+            const shadowDuration = 1500 // 1.5秒
+            const shadowStartTime = Date.now()
+
+            const updateShadow = () => {
+                const shadowElapsed = Date.now() - shadowStartTime
+                const shadowProgress = Math.min(shadowElapsed / shadowDuration, 1)
+
+                // 使用 cubic-bezier 缓动函数
+                const easeProgress = cubicBezier(0.4, 0, 0.2, 1)(shadowProgress)
+
+                const shadowIntensity = 20 * easeProgress
+                titleFilter.value = `url(#disintegrate) drop-shadow(0 0 ${shadowIntensity}px #409EFF)`
+
+                if (shadowProgress < 1) {
+                    requestAnimationFrame(updateShadow)
+                }
+            }
+
+            requestAnimationFrame(updateShadow)
         }
     }
 
     requestAnimationFrame(update)
+}
+
+// 添加 cubic-bezier 辅助函数
+function cubicBezier(x1, y1, x2, y2) {
+    return t => {
+        const cx = 3 * x1
+        const bx = 3 * (x2 - x1) - cx
+        const ax = 1 - cx - bx
+
+        const cy = 3 * y1
+        const by = 3 * (y2 - y1) - cy
+        const ay = 1 - cy - by
+
+        const sampleCurveX = t => ((ax * t + bx) * t + cx) * t
+        const sampleCurveY = t => ((ay * t + by) * t + cy) * t
+
+        return sampleCurveY(t)
+    }
 }
 
 onMounted(() => {
@@ -31,7 +68,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="title-container">
+        <div class="title-container" :style="{ filter: titleFilter }">
             <text>互联科技商城</text>
         </div>
 
@@ -65,7 +102,6 @@ onMounted(() => {
     align-items: center;
     position: relative;
     pointer-events: none;
-    filter: url(#disintegrate);
 }
 
 text {
@@ -122,13 +158,11 @@ path {
 
 
 /* 为指定路径应用动画 */
-#svg_6,
+/* #svg_6,
 #svg_7 {
     animation: rotate 4s linear infinite;
     transform-origin: center;
-    /* 围绕自身中心旋转 */
     transform-box: fill-box;
-    /* 确保旋转中心计算基于图形自身 */
 }
 
 #svg_1 {
@@ -193,5 +227,5 @@ path {
 
 #svg_16 {
     --path-color: #00ffff
-}
+} */
 </style>

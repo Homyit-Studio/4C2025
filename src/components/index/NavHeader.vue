@@ -160,8 +160,8 @@ const handleScroll = () => {
     requestAnimationFrame(() => {
         let opacity = 1 - (scrollTop / threshold)
         opacity = Math.max(0, Math.min(1, opacity))
-        navHeader.style.opacity = opacity
-        navHeader.style.backgroundColor = `rgba(255, 255, 255, ${0.9 * opacity})`
+        // navHeader.style.opacity = opacity
+        // navHeader.style.backgroundColor = `rgba(255, 255, 255, ${0.9 * opacity})`
         if (opacity === 0) {
             navHeader.style.display = 'none'
         } else {
@@ -209,28 +209,22 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .nav-header {
     z-index: 10;
     position: fixed;
     top: 0;
-    /* 新增定位锚点 */
     left: 0;
     width: 100%;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
-    /* 增加初始透明度 */
-    backdrop-filter: blur(5px);
-    /* 可选毛玻璃效果 */
+    height: 60px;
+    background-color: rgba(255, 255, 255);
     transition: opacity 0.3s ease, background-color 0.3s ease;
-    /* 增加颜色过渡 */
     display: flex;
     justify-content: space-between;
 
     .left {
         display: flex;
         align-items: center;
-        /* margin-top: 20px; */
     }
 
     .right {

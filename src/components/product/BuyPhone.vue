@@ -51,7 +51,7 @@ const products = ref([
 
 const selectedBrand = ref('all');
 const divContainer = ref(null);
-const imgWidth = 366;
+const imgWidth = 320;
 const filteredProducts = ref([]);
 let resizeObserver = null;
 
@@ -84,29 +84,32 @@ function setPosition() {
     // 计算左边起始位置，使整体居中
     const startX = (containerWidth - totalWidth) / 2;
 
-    // 确定最后一行的起始索引
-    const lastRowStart = Math.floor((cards.length - 1) / columns) * columns;
-
     cards.forEach((card, index) => {
         const minHeight = Math.min(...columnHeights);
         const columnIndex = columnHeights.indexOf(minHeight);
-        const isLastRow = index >= lastRowStart;
+        // 计算x坐标
+        // 如果是第一列，靠左对齐；如果是最后一列，靠右对齐
+        let x;
+        if (columnIndex === 0) {
+            x = startX; // 第一列靠左
+        } else if (columnIndex === columns - 1) {
+            x = startX + totalWidth - imgWidth; // 最后一列靠右
+        } else {
+            x = startX + columnIndex * (imgWidth + space); // 中间列使用间距
+        }
 
-        // 计算x坐标，考虑居中对齐
-        const x = startX + columnIndex * (imgWidth + space);
         card.style.left = `${x}px`;
-
-        // 计算y坐标，最后一行不需要底部间距
         card.style.top = `${minHeight}px`;
 
-        // 更新列高度，最后一行不添加间距
-        const bottomSpace = isLastRow ? 0 : space;
-        columnHeights[columnIndex] += card.offsetHeight + bottomSpace;
+        // 更新列高度
+        const cardHeight = card.offsetHeight;
+        columnHeights[columnIndex] += cardHeight + (space);
     });
 
-    // 设置容器高度为最高列的高度
+    // 设置容器高度
     divContainer.value.style.height = `${Math.max(...columnHeights)}px`;
 }
+
 const recalculateLayout = debounce(() => {
     nextTick(() => {
         setPosition();
@@ -115,15 +118,17 @@ const recalculateLayout = debounce(() => {
 
 function calculateLayout(containerWidth) {
     // 计算可以放置的最大列数
-    const columns = Math.floor((containerWidth - 20) / (imgWidth + 20)); // 减去容器的左右padding
-    // 计算实际间距，使卡片在容器中均匀分布
-    const totalGap = containerWidth - columns * imgWidth;
-    const space = totalGap / (columns + 1); // 包括左右边距
+    const minGap = 20; // 最小间距
+    const columns = Math.floor((containerWidth + minGap) / (imgWidth + minGap));
+
+    // 计算实际间距，只计算内部间距
+    const totalSpace = containerWidth - (columns * imgWidth) - 40;
+    const space = columns > 1 ? totalSpace / (columns - 1) : 0; // 只在列之间分配空间
 
     return {
         columns,
-        space: Math.max(space, 10),
-        totalWidth: columns * imgWidth + (columns - 1) * space// 总宽度，用于居中
+        space,
+        totalWidth: columns * imgWidth + (columns - 1) * space // 总宽度包含内部间距
     };
 }
 
@@ -396,7 +401,7 @@ const dropToCart = (event) => {
     flex: 1;
     position: relative;
     overflow-y: auto;
-    margin: 20px;
+    margin: 20px 20px 20px 8vw;
     padding-left: 20px;
     width: 85%;
     /* background-color: #fff; */

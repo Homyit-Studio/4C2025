@@ -97,26 +97,16 @@ const scrollContainer = ref(null)
   height: 100vw;
   top: 0;
   left: 0;
-  opacity: 0.4;
+  opacity: 0.6;
   background-image: url('/bg_phone.png');
   /* 使用你的图片路径 */
   background-size: cover;
   background-position: center;
-  transform: translateZ(-3px) scale(3);
+  transform: translateZ(-3px) scale(3.5);
   /* 通过3D变换创建视差效果 */
-  z-index: -10;
+  z-index: -1;
   will-change: transform;
   /* 优化动画性能 */
-}
-
-/* 保持原有item样式 */
-.item {
-  position: relative;
-  width: 100%;
-  height: 95vh;
-  scroll-snap-align: start;
-  /* background: rgba(255, 255, 255, 0.7); */
-  /* 添加半透明白色背景保证内容可读 */
 }
 
 /* 创建3D上下文 */
@@ -150,7 +140,7 @@ const scrollContainer = ref(null)
 .item {
   position: relative;
   width: 100%;
-  height: 95vh;
+  height: 100vh;
   margin: 0 auto;
   /* align-items: center; */
   font-size: 3em;
