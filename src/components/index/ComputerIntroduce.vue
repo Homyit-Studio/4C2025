@@ -3,7 +3,11 @@
 
 <template>
     <div class="computer-introduce">
-        电脑
+        <div class="computer-introduce-container">
+            <div class="computer-introduce-container-content">
+                电脑
+            </div>
+        </div>
     </div>
 
 </template>
@@ -12,7 +16,6 @@
 .computer-introduce {
     width: 100%;
     height: 100%;
-    /* background-color: #f00; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,5 +35,14 @@
     background-size: 100% 100%;
     opacity: 0.8;
     z-index: -1;
+}
+
+.computer-introduce-container {
+    width: 90%;
+    height: 73vh;
+    margin-top: 5vh;
+    margin-bottom: 15vh;
+    margin-left: 1.3vw;
+    /* background-color: #fff; */
 }
 </style>

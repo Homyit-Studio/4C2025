@@ -59,7 +59,7 @@ onMounted(() => {
 
 .title-container {
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,7 +70,7 @@ onMounted(() => {
 
 text {
     color: #ffffff;
-    font-size: 9.6386vw;
+    font-size: 9vw;
     transition: all 0.3s;
     font-family: 'title-big';
     animation:

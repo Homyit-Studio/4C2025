@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div style="font-size: 1vw;color:#d25b5b; display: flex; align-items: center;">
+        <div style="font-size: 1vw;color:#FF8989; display: flex; align-items: center;">
             做最实惠的电子商品专卖店
         </div>
 
@@ -342,7 +342,7 @@ onMounted(() => {
 }
 
 .cart-item:hover {
-    color: #d25b5b;
+    color: #FF8989;
 }
 
 .buy-item {
@@ -352,7 +352,7 @@ onMounted(() => {
 }
 
 .buy-item:hover {
-    color: #d25b5b;
+    color: #FF8989;
 }
 
 .nav-logo-cart {
@@ -369,7 +369,7 @@ onMounted(() => {
 }
 
 .ToBuy-cart:hover .nav-svg-cart {
-    color: #d25b5b;
+    color: #FF8989;
 }
 
 .nav-logo-name {
@@ -433,12 +433,5 @@ onMounted(() => {
     animation:
         draw 3s ease-in-out infinite alternate,
         pulse 3s ease-in-out infinite;
-}
-
-
-@keyframes pulse {
-    50% {
-        filter: drop-shadow(0 0 5px currentColor);
-    }
 }
 </style>

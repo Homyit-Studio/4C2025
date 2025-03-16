@@ -94,17 +94,17 @@ const scrollContainer = ref(null)
   content: '';
   position: fixed;
   width: 100vw;
-  height: 100vh;
+  height: 100vw;
   top: 0;
   left: 0;
-  opacity: 0.7;
-  background-image: url('/bg_phone.webp');
+  opacity: 0.4;
+  background-image: url('/bg_phone.png');
   /* 使用你的图片路径 */
   background-size: cover;
   background-position: center;
-  transform: translateZ(-2px) scale(3);
+  transform: translateZ(-3px) scale(3);
   /* 通过3D变换创建视差效果 */
-  z-index: -1;
+  z-index: -10;
   will-change: transform;
   /* 优化动画性能 */
 }
@@ -128,7 +128,7 @@ const scrollContainer = ref(null)
 #item-0 {
   position: relative;
   /* overflow: hidden; */
-  height: 60vh;
+  height: 40vh;
 
 }
 

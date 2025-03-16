@@ -89,8 +89,8 @@ onBeforeUnmount(() => {
     height: 100px;
     border-radius: 50% 50% 0 0;
     filter: url(#bubble);
-    background-color: #ffffff7d;
-    opacity: 0.5;
+    /* background-color: #ffffff7d; */
+    opacity: 0.3;
     /* overflow-x: hidden; */
 }
 

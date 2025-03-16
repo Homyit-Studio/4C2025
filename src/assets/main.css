@@ -29,6 +29,11 @@
     src: url(../assets/fonts/main-Regular.ttf);
 }
 
+@keyframes pulse {
+    50% {
+        filter: drop-shadow(0 0 20px currentColor);
+    }
+}
 
 * {
     margin: 0;
